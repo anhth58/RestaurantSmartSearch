@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="40dp">
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="left|center"
+        android:layout_centerVertical="true"
+        android:paddingLeft="@dimen/p40dp"
+        android:paddingRight="@dimen/p40dp"
+        android:text="Nhà Hàng Cơm Gà"
+        android:textSize="@dimen/size_text_16sp"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        />
+    <ImageView
+        android:id="@+id/im_arrow"
+        android:layout_width="@dimen/p40dp"
+        android:layout_height="@dimen/p40dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/up_left_arow"/>
+</RelativeLayout>

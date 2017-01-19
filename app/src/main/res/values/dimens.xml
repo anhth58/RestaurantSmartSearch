@@ -1,0 +1,153 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="p0dp">0dp</dimen>
+    <dimen name="circle_contain">30dp</dimen>
+    <dimen name="arrow_width">40dp</dimen>
+    <dimen name="question_width">20dp</dimen>
+    <dimen name="size_text_16sp">16sp</dimen>
+    <dimen name="size_text_18sp">18sp</dimen>
+    <dimen name="size_text_20sp">19sp</dimen>
+    <dimen name="logo_width">75dp</dimen>
+    <dimen name="next_height">60dp</dimen>
+    <dimen name="footer_height">50dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+    <dimen name="margin_horizontal_10">10dp</dimen>
+    <dimen name="margin_horizontal_20">20dp</dimen>
+    <dimen name="margin_horizontal_40">40dp</dimen>
+    <dimen name="margin_horizontal_30">30dp</dimen>
+    <dimen name="margin_horizontal_80">80dp</dimen>
+    <dimen name="margin_horizontal_90">90dp</dimen>
+    <dimen name="margin_top_15">15dp</dimen>
+    <dimen name="margin_top_20">20dp</dimen>
+    <dimen name="avatar_size">45dp</dimen>
+    <dimen name="avatar_size_online">40dp</dimen>
+    <dimen name="row_size">60dp</dimen>
+    <dimen name="margin_top">10dp</dimen>
+    <dimen name="map_diachithucuoc_height">300dp</dimen>
+    <dimen name="chat_bar_height">50dp</dimen>
+
+    <!-- text size -->
+    <dimen name="text_view_12">12sp</dimen>
+    <dimen name="text_view_12_login">12sp</dimen>
+    <dimen name="text_view_16">16sp</dimen>
+    <dimen name="text_view_18">18sp</dimen>
+    <dimen name="exit_text_16">16sp</dimen>
+    <dimen name="text_view_title">16sp</dimen>
+    <dimen name="text_view_sum">13sp</dimen>
+    <dimen name="dilivery_size">0.3dp</dimen>
+    <dimen name="text_name_row">18sp</dimen>
+
+    <!-- dimens typing view -->
+    <dimen name="typing_wi">159dp</dimen>
+    <dimen name="typing_hi">134dp</dimen>
+    <dimen name="typing_wi_bound">18dp</dimen>
+    <dimen name="typing_hi_bound">18dp</dimen>
+    <dimen name="typing_text_size">24sp</dimen>
+
+    <!-- button -->
+    <dimen name="popup_reply_min_height">200dp</dimen>
+
+    <!-- gallery -->
+    <dimen name="ng_gs_item_album_height">150dp</dimen>
+    <dimen name="ng_gs_item_photo_height">120dp</dimen>
+
+    <!-- NEW -->
+    <dimen name="margin_small">10dp</dimen>
+    <dimen name="margin_normal">15dp</dimen>
+    <dimen name="margin_larger">25dp</dimen>
+    <dimen name="margin_x">30dp</dimen>
+    <dimen name="actionbar_height">60dp</dimen>
+    <dimen name="list_member_height">150dp</dimen>
+    <dimen name="footerbar_heigth">60dp</dimen>
+    <dimen name="chatbar_height">50dp</dimen>
+    <dimen name="tabbar_height">50dp</dimen>
+    <dimen name="text_notify">12sp</dimen>
+    <dimen name="avatar_row_contact">50dp</dimen>
+    <dimen name="avatar_chat_size">50dp</dimen>
+    <dimen name="text_contact_label_row">16sp</dimen>
+    <dimen name="text_contact_label_row_login">16sp</dimen>
+    <dimen name="text_contact_name_row">18sp</dimen>
+    <dimen name="text_contact_status_row">12sp</dimen>
+    <dimen name="text_contact_status_row_login">12sp</dimen>
+    <dimen name="height_row_contact">105dp</dimen>
+    <dimen name="dilivery_normal">0.5dp</dimen>
+    <dimen name="dilivery_larger">1.0dp</dimen>
+    <dimen name="avatar_contact_info">45dp</dimen>
+    <dimen name="avatar_welcom">100dp</dimen>
+    <dimen name="button_height">50dp</dimen>
+    <dimen name="button_height_larger">50dp</dimen>
+    <dimen name="edit_text_height">40dp</dimen>
+    <dimen name="text_button">16sp</dimen>
+    <dimen name="text_button_small">13sp</dimen>
+    <dimen name="text_title">18sp</dimen>
+    <dimen name="text_sum">13sp</dimen>
+    <dimen name="text_content">16sp</dimen>
+    <dimen name="text_time">14sp</dimen>
+    <dimen name="text_chat_content">16sp</dimen>
+    <dimen name="text_chat_name">12sp</dimen>
+    <dimen name="text_chat_time">12sp</dimen>
+    <dimen name="row_dialog">50dp</dimen>
+    <dimen name="sliding_menu_padding">80dp</dimen>
+    <dimen name="sliding_menu_row">60dp</dimen>
+    <dimen name="sliding_menu_avatar">45dp</dimen>
+    <dimen name="keyboard_height">150dp</dimen>
+    <dimen name="item_album_height">150dp</dimen>
+    <dimen name="item_photo_height">120dp</dimen>
+    <dimen name="coversation_row">90dp</dimen>
+    <dimen name="conversation_avatar_size">45dp</dimen>
+    <dimen name="contact_row_header">30dp</dimen>
+    <dimen name="contact_row">105dp</dimen>
+    <dimen name="group_row">80dp</dimen>
+    <dimen name="contact_row_icon">22dp</dimen>
+    <dimen name="contact_info_row">45dp</dimen>
+    <dimen name="row_menu_size">50dp</dimen>
+    <dimen name="note_photo_height">200dp</dimen>
+    <dimen name="note_item_height">200dp</dimen>
+    <dimen name="text_help">14dp</dimen>
+    <dimen name="row_storage">70dp</dimen>
+    <dimen name="icon_row_storage">40dp</dimen>
+    <dimen name="progressbar_height">3dp</dimen>
+
+    <dimen name="p8dp">8dp</dimen>
+    <dimen name="text_nameapp_login">18sp</dimen>
+    <dimen name="p10dp">10dp</dimen>
+    <dimen name="p12dp">12dp</dimen>
+    <dimen name="p5dp">5dp</dimen>
+    <dimen name="p2dp">2dp</dimen>
+    <dimen name="p3dp">2dp</dimen>
+    <dimen name="p15dp">15dp</dimen>
+    <dimen name="p18dp">18dp</dimen>
+    <dimen name="p20dp">20dp</dimen>
+    <dimen name="p22dp">22dp</dimen>
+    <dimen name="p24dp">24dp</dimen>
+    <dimen name="p25dp">25dp</dimen>
+    <dimen name="p30dp">30dp</dimen>
+    <dimen name="p35dp">35dp</dimen>
+    <dimen name="p40dp">40dp</dimen>
+    <dimen name="p45dp">45dp</dimen>
+    <dimen name="p47dp">47dp</dimen>
+    <dimen name="p50dp">50dp</dimen>
+    <dimen name="p60dp">60dp</dimen>
+    <dimen name="p65dp">65dp</dimen>
+    <dimen name="p80dp">80dp</dimen>
+    <dimen name="p90dp">90dp</dimen>
+    <dimen name="p100dp">100dp</dimen>
+    <dimen name="p150dp">100dp</dimen>
+    <dimen name="p200dp">200dp</dimen>
+    <dimen name="p300dp">300dp</dimen>
+    <dimen name="p350dp">350dp</dimen>
+    <dimen name="p400dp">400dp</dimen>
+    <dimen name="tab_height">45dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="test_size">30sp</dimen>
+    <integer name="text_15sp">15</integer>
+    <integer name="text_16sp">16</integer>
+    <dimen name="text_permission">16dp</dimen>
+    <dimen name="size_new_folder_dialog">230dp</dimen>
+</resources>

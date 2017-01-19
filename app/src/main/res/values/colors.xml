@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="bg_text_layout">#e7eaeb</color>
+    <color name="bacground_slide_tablet">#f5f6f6</color>
+    <color name="dark_transparent">#88000000</color>
+    <color name="tab_bg">#dcdcdc</color>
+    <color name="background">#FFFFFF</color>
+    <color name="red_color">#FF0013</color>
+    <color name="red_color_light">#ffbcc1</color>
+    <color name="cyan">#00f0ff</color>
+    <color name="cyan_light">#99f4fa</color>
+    <color name="green">#00FF00</color>
+    <color name="contact_room_search_bg">#32394A</color>
+    <color name="grey_light">#f1f1f1</color>
+    <color name="grey">#e1e1e1</color>
+    <color name="gray_dark">#cccccc</color>
+    <color name="gray_light">#ededed</color>
+    <color name="dark_light">#888888</color>
+    <color name="row_pressed">#7ccae6</color>
+    <color name="blue_dark">#03686d</color>
+    <color name="tab_blue">#008995</color>
+    <color name="timeline_like">#555555</color>
+    <color name="like_bg">#e5e7ea</color>
+    <color name="tab_top_border">#cccccc</color>
+    <color name="tab_text">#898989</color>
+    <color name="tab_text_active">#247bc2</color>
+    <color name="item_selected">#7ccae6</color>
+    <color name="room_chat">#cb70d7</color>
+    <color name="room_chat_pressed">#b665c1</color>
+    <color name="nearby">#5bd999</color>
+    <color name="nearby_pressed">#52c389</color>
+    <color name="homepage">#eb5050</color>
+    <color name="homepage_pressed">#d34848</color>
+    <color name="notify">#00c0e4</color>
+    <color name="notify_pressed">#00accd</color>
+    <color name="txt_pull">#7d7e87</color>
+    <color name="accept">#95cc6e</color>
+    <color name="accept_pressed">#7fae5e</color>
+    <color name="refuse">#e2ebf2</color>
+    <color name="refuse_pressed">#c0c8ce</color>
+    <color name="setting_bg">#f0eff4</color>
+    <color name="txt_status">#888888</color>
+    <color name="answer">#4ac960</color>
+    <color name="answer_pressed">#3fab52</color>
+    <color name="pic_selected">#887ccae6</color>
+    <color name="facebook">#39599f</color>
+    <color name="facebook_pressed">#2e477f</color>
+    <color name="new_friend">#e1eefa</color>
+    <color name="background_app">#f9f9f9</color>
+    <color name="menu_item_normal">#ffffff</color>
+    <color name="menu_item_select">#e2e2e2</color>
+    <color name="popup_menu_black">#cc000000</color>
+
+    <drawable name="ab_bg_black">#99000000</drawable>
+
+    <!-- New Style Chat Screen -->
+    <color name="white_dark_transparent">#66f9f9f9</color>
+    <color name="white_transparent">#ddffffff</color>
+    <color name="color_sum">#888888</color>
+
+    <!-- danh cho nhung dong highlight -->
+    <color name="highlight">#7daecc</color>
+    <color name="status_highlight">#91DBD6</color>
+    <color name="highlight_slide_menu">#26000000</color>
+    <color name="hashtag_highlights">#67caf6</color>
+
+    <!-- NEW -->
+    <color name="transparent">#00ffffff</color>
+    <color name="transparent_select">#66f9f9f9</color>
+    <color name="white">#ffffff</color>
+    <color name="white_dark">#f2f2f2</color>
+    <color name="white_select">#EBEBEB</color>
+    <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
+    <color name="dark">#4d4d4e</color>
+    <color name="gray">#8b8b8b</color>
+
+    <!-- app -->
+    <color name="text_color_tab_tablet">#909497</color>
+    <color name="app_color">#039f7a</color>
+    <color name="app_color_tints">#35b294</color>
+    <color name="app_color_light">#67caf6</color>
+    <color name="app_background">#42b49a</color>
+    <color name="app_background_light">#34e7bf</color>
+    <color name="app_disable">#b0b4bb</color>
+    <color name="home_background_light">#f7f8f9</color>
+    <color name="home_background">#e9eaec</color>
+    <color name="home_background_dark">#b4b8b9</color>
+    <color name="background_chat">#E1E6E7</color>
+    <color name="text_color">#9a9a9a</color>
+    <color name="text_color_hint">#ffffff</color>
+    <color name="text_chat_send">#ffffff</color>
+    <color name="text_chat_to">#000000</color>
+    <color name="text_chat_high_light">#0000FF</color>
+    <color name="text_chat_time">#909497</color>
+    <color name="dilivery_color">#e2e2e2</color>
+    <color name="sliding_home">#214153</color>
+    <color name="sliding_home_select">#3f7a9b</color>
+    <color name="sliding_home_headerbar">#1a3442</color>
+    <color name="text_name_row">#000000</color>
+    <color name="text_status_row">#909497</color>
+    <color name="text_time">#c2c3c4</color>
+    <color name="text_help">#909497</color>
+    <color name="fog">#ccffffff</color>
+    <color name="orange">#ff6600</color>
+
+    <!-- social -->
+    <color name="text_color_black">#ff000000</color>
+    <color name="text_color_gray">#919598</color>
+    <color name="text_color_white">#FFFFFF</color>
+    <color name="text_color_tab">#42b49a</color>
+    <color name="background_detail_post">#e9eaec</color>
+
+    <!-- TTNS -->
+    <color name="today">#ffffff</color>
+    <color name="greyed_out">#c7c7c7</color>
+    <color name="bg_today">#46c1a5</color>
+
+    <color name="summer">#44eebd82</color>
+    <color name="fall">#44d8d27e</color>
+    <color name="winter">#44a1c1da</color>
+    <color name="spring">#448da64b</color>
+
+    <color name="survey">#37a4dd</color>
+    <color name="ki">#46c1a5</color>
+</resources>

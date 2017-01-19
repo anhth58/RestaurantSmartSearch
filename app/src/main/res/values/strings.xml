@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Let\'s Search</string>
+    <string name="action_settings">Settings</string>
+    <string name="api_key">AIzaSyD-VOHaMFP3jgQ-8Px0z7jqs_1bVvbpEWE</string>
+    <string name="p_serve">Phục vụ</string>
+    <string name="p_quality">Chất lượng</string>
+    <string name="p_location">Vị trí</string>
+    <string name="p_space">Không gian</string>
+    <string name="p_cost">Giá cả</string>
+
+    <string name="p_closed">CHƯA MỞ CỬA</string>
+    <string name="p_opening">ĐANG MỞ CỬA</string>
+
+</resources>
