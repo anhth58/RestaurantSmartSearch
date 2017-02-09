@@ -1,0 +1,41 @@
+﻿<START:món> lẩu <END> giá rẻ
+<START:món> cơm rang <END> giá rẻ
+<START:món> đồ uống <END> giá rẻ
+Quán ăn giá rẻ
+Quán ăn giá rẻ gần đây
+Quán ăn giá sinh viên
+<START:món> cơm rang <END> ở đường <START:nơi> Cầu Giấy <END>
+<START:món> lẩu <END> ở đường <START:nơi> Cầu Giấy <END>
+<START:món> lẩu mèo <END> ở đường <START:nơi> Cầu Giấy <END>
+<START:món> lẩu <END> gần đường <START:nơi> Cầu Giấy <END>
+<START:món> lẩu mèo <END> gần đường <START:nơi> Cầu Giấy <END>
+<START:món> lẩu <END> trên đường <START:nơi> Cầu Giấy <END>
+<START:món> lẩu mèo <END> trên đường <START:nơi> Cầu Giấy <END>
+Quán ăn trên đường <START:nơi> Cầu Giấy <END>
+Quán <START:món> vịt quay <END> gần ngõ 1 <START:nơi> Phạm Văn Đồng <END>
+Địa điểm bán <START:món> chả cá <END> gần ở <START:nơi> Cầu Giấy <END>
+Nơi bán <START:món> cơm rang <END> gần đường <START:nơi> Cầu Giấy <END>
+Cần tìm quán <START:món> kem <END> gần nhất
+Cần tìm quán ăn <START:món> buffer <END> gần đây
+Đồ uống cách đây 15 phút đi bộ
+Nhà hàng ngay đây
+Nhà hàng ngon, rẻ, gần đây
+Quán <START:món> gà rán <END> gần nhất
+Quán ăn gần <START:nơi> Đại học QGHN <END>
+Quán ăn gần đây
+Quán ăn gần đường <START:nơi> Cầu Giấy <END>
+Quán gà rán ngay đây
+Tìm quán <START:món> kem <END> gần nhất
+Tìm quán ăn cách đây không xa
+<START:món> Xúc xích Đức Việt <END> gần đây
+Địa điểm bán <START:món> kem< END> gần đây
+Nơi bán <START:món> kem <END> gần đây nhất
+Chỗ bán <START:món> cơm rang <END> ngon gần đây
+<START:món> Quán nướng <END> cách đây 1 km
+Quán ăn cách đây 1 km
+Tìm nhà hàng cách đây 1 km
+Các quán <START:món> kem <END> ngon ở <START:nơi> Tràng Tiền <END>
+Địa điểm quán ăn vỉa hè ngon nhất
+Quán ăn đông nhất
+Quán ăn ngon nhất
+Quán ăn vệ sinh nhất

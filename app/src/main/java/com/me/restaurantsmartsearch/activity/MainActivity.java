@@ -23,6 +23,7 @@ import com.me.restaurantsmartsearch.customview.CustomViewpager;
 import com.me.restaurantsmartsearch.fragment.ListFragment;
 import com.me.restaurantsmartsearch.fragment.MapFragment;
 import com.me.restaurantsmartsearch.model.Restaurant;
+import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //init nlp
+        RestaurantNLP.init(this);
+
+        //example nlp
+        String[][] names = RestaurantNLP.getNamesInQuery("Tìm quán chả cá gần nhất ở đường Cầu Giấy");
+        for (int i=0; i<names.length; i++){
+            System.out.println(names[i][0] + ":" + names[i][1]);
+        }
+        System.out.println(RestaurantNLP.getCategory("Tìm quán chả cá gần nhất ở đường Cầu Giấy"));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
