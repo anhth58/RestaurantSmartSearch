@@ -48,7 +48,7 @@ import io.realm.Realm;
 /**
  * Created by Laptop88T on 11/15/2016.
  */
-public class ListFragment extends Fragment {
+public class ListFragment extends BaseFragment {
     CusEditText edSearch;
     SwipeMenuListView lvRestaurant;
     ArrayList<Restaurant> listResult = new ArrayList<>();
@@ -150,6 +150,11 @@ public class ListFragment extends Fragment {
     }
 
     @Override
+    public String getTagName() {
+        return null;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (listResult.size() == 0) {
@@ -164,7 +169,7 @@ public class ListFragment extends Fragment {
 
     public void searchOnline(){
         isSearchOnline = true;
-        hideSoftKeyBoard();
+        hideSoftKeyboard();
         SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(edSearch.getText().toString()), new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
@@ -183,7 +188,6 @@ public class ListFragment extends Fragment {
                     }
                     if (listResult.size() > 0) {
                         restaurantAdapter.setRestaurant(listResult);
-                        ((MainActivity) getActivity()).addSearchResultToMap(listResult);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -224,13 +228,6 @@ public class ListFragment extends Fragment {
             }
         });
         suggestAsyncTask.execute();
-    }
-    public void hideSoftKeyBoard() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     private int dp2px(int dp) {

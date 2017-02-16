@@ -1,9 +1,11 @@
 package com.me.restaurantsmartsearch.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +18,7 @@ import com.squareup.picasso.Picasso;
  */
 public class RestaurantDetailActivity extends AppCompatActivity {
     private TextView tvName, tvServeScore, tvQualityScore, tvLocationScore, tvSpaceScore, tvPriceScore, tvLocation, tvType, tvTime, tvPrice;
-    private ImageView imCover;
+    private ImageView imCover, imLocation,imBack;
     Restaurant restaurant;
 
     @Override
@@ -44,6 +46,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         tvPrice = (TextView) findViewById(R.id.tv_price);
 
         imCover = (ImageView) findViewById(R.id.im_cover);
+        imLocation = (ImageView) findViewById(R.id.im_location);
+        imBack = (ImageView) findViewById(R.id.im_back);
+
     }
     public void fillData(){
         tvName.setText(restaurant.getName());
@@ -61,5 +66,19 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 .placeholder(R.color.gray)
                 .error(R.color.gray)
                 .into(imCover);
+        imLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RestaurantDetailActivity.this, MapActivity.class);
+                intent.putExtra("restaurant", restaurant);
+                startActivity(intent);
+            }
+        });
+        imBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 }

@@ -42,7 +42,7 @@ public class SuggestAsyncTask extends AsyncTask<Void, Integer, String> {
             if (i < arr.length - 1) s += arr[i] + "+";
             else s += arr[i];
         }
-        String querry = Constant.IP_SERVER_HTTP + "/mydb4/_suggest?pretty";
+        String querry = Constant.IP_SERVER_HTTP + "/mydb/_suggest?pretty";
         httpGet = new HttpPost(querry);
         httpGet.setHeader("Authorization", Constant.AUTHORIZATION);
         httpGet.setHeader("Content-type", "application/json");

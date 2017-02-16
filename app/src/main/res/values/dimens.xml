@@ -133,6 +133,7 @@
     <dimen name="p45dp">45dp</dimen>
     <dimen name="p47dp">47dp</dimen>
     <dimen name="p50dp">50dp</dimen>
+    <dimen name="p55dp">55dp</dimen>
     <dimen name="p60dp">60dp</dimen>
     <dimen name="p65dp">65dp</dimen>
     <dimen name="p80dp">80dp</dimen>

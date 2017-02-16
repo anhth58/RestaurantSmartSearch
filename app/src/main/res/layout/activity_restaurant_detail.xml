@@ -16,10 +16,11 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
             <ImageView
-                android:layout_width="@dimen/p25dp"
-                android:layout_height="@dimen/p25dp"
+                android:id="@+id/im_back"
+                android:layout_width="@dimen/p50dp"
+                android:layout_height="@dimen/p50dp"
                 android:src="@drawable/back_white"
-                android:layout_marginLeft="@dimen/p15dp"/>
+                android:padding="@dimen/p15dp"/>
             <TextView
                 android:id="@+id/tv_name_detail"
                 android:layout_width="wrap_content"
@@ -179,27 +180,42 @@
             android:layout_height="0.2dp"
             android:background="@color/grey"
             android:layout_marginTop="@dimen/p10dp"/>
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:background="@color/white">
-            <TextView
-                android:id="@+id/tv_status"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_toLeftOf="@+id/im_location">
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/p_closed"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:layout_marginTop="@dimen/p10dp"/>
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08:00 AM - 0:00 PM"
+                    android:layout_marginBottom="@dimen/p10dp"/>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/im_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/p_closed"
-                android:textColor="@color/red"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/p10dp"/>
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="08:00 AM - 0:00 PM"
-                android:layout_marginBottom="@dimen/p10dp"/>
-        </LinearLayout>
+                android:src="@drawable/location"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/p10dp"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.2dp"
