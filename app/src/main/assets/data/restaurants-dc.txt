@@ -1,0 +1,37 @@
+﻿giá_rẻ lẩu giá rẻ	
+giá_rẻ cơm rang giá rẻ	
+giá_rẻ đồ uống giá rẻ	
+giá_rẻ Quán ăn giá rẻ	
+giá_rẻ Quán ăn giá rẻ gần đây	
+giá_rẻ Quán ăn giá sinh viên	
+giá_rẻ cơm rang ở đường Cầu Giấy	
+theo_nơi lẩu ở đường Cầu Giấy	
+theo_nơi lẩu mèo ở đường Cầu Giấy	
+theo_nơi lẩu gần đường Cầu Giấy	
+theo_nơi lẩu mèo gần đường Cầu Giấy
+theo_nơi lẩu trên đường Cầu Giấy	
+theo_nơi lẩu mèo trên đường Cầu Giấy	
+theo_nơi Quán ăn trên đường Cầu Giấy	
+theo_nơi Quán vịt quay gần ngõ 1 Phạm Văn Đồng	
+theo_nơi Địa điểm bán chả cá gần ở Cầu Giấy	
+theo_nơi Nơi bán cơm rang gần đường Cầu Giấy
+theo_nơi Các quán kem ngon ở Tràng Tiền		
+gần_đây Cần tìm quán kem gần nhất	
+gần_đây Cần tìm quán ăn buffer gần đây	
+gần_đây Đồ uống cách đây 15 phút đi bộ	
+gần_đây Nhà hàng ngay đây	
+gần_đây Nhà hàng ngon, rẻ, gần đây	
+gần_đây Quán gà rángần nhất	
+gần_đây Quán ăn gần Đại học QGHN	
+gần_đây Quán ăn gần đây	
+gần_đây Quán ăn gần đường Cầu Giấy
+gần_đây Quán gà rán ngay đây	
+gần_đây Tìm quán kem gần nhất	
+gần_đây Tìm quán ăn cách đây không xa	
+gần_đây Xúc xích Đức Việt gần đây	
+gần_đây Địa điểm bán kem gần đây	
+gần_đây Nơi bán kem gần đây nhất	
+gần_đây Chỗ bán cơm rang ngon gần đây	
+khoảng_cách Quán nướng cách đây 1 km	
+khoảng_cách Quán ăn cách đây 1 km	
+khoảng_cách Tìm nhà hàng cách đây 1 km		
