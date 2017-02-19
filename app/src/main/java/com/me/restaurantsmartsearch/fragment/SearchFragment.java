@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.me.restaurantsmartsearch.R;
@@ -28,6 +29,8 @@ import com.me.restaurantsmartsearch.adapter.SuggestAdapter;
 import com.me.restaurantsmartsearch.async.SearchAsyncTask;
 import com.me.restaurantsmartsearch.async.SuggestAsyncTask;
 import com.me.restaurantsmartsearch.model.Restaurant;
+import com.me.restaurantsmartsearch.nlp.ContextNLP;
+import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
 
 import org.json.JSONArray;
@@ -76,6 +79,7 @@ public class SearchFragment extends BaseFragment {
 
             @Override
             public void onMidClick(String sSearch, int position) {
+                Toast.makeText(getActivity(), "inside onMidClick()", Toast.LENGTH_LONG).show();
                 listResult.clear();
                 mListSearch.setVisibility(View.GONE);
                 mInputSearch.setText(sSearch.trim());
@@ -201,6 +205,18 @@ public class SearchFragment extends BaseFragment {
     }
 
     public void searchOnline(String s) {
+        //debug purpose, remove later
+        String toast="";
+        //example nlp
+        ContextNLP result = RestaurantNLP.query(s);
+        toast += "Type: " + result.getType() + "\n";
+        toast += "Location: " + result.getLocation();
+        /*
+        * Right now just three types are available:
+        * ContextNLP.TYPE_CHEAP, ContextNLP.TYPE_NEAR, ContextNLP.TYPE_LOCATION
+        * */
+        Toast.makeText(getActivity(), toast, Toast.LENGTH_LONG).show();
+
         isSearchOnline = true;
         hideSoftKeyboard();
         prLoading.setVisibility(View.VISIBLE);
