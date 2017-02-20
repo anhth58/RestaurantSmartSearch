@@ -41,14 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //init nlp
         RestaurantNLP.init(this);
 
-        //example nlp
-        String[][] names = RestaurantNLP.getNamesInQuery("Tìm quán chả cá gần nhất ở đường Cầu Giấy");
-        for (int i=0; i<names.length; i++){
-            System.out.println(names[i][0] + ":" + names[i][1]);
-        }
-        System.out.println(RestaurantNLP.getCategory("Tìm quán chả cá gần nhất ở đường Cầu Giấy"));
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    public void importDataToElasticServer(){
+    public void importDataToElasticServer() {
         Realm.init(MainActivity.this);
         Realm realm = Realm.getDefaultInstance().getDefaultInstance();
         ArrayList<Restaurant> list = new ArrayList(realm.where(Restaurant.class).findAll());
@@ -85,20 +77,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager.setAdapter(adapter);
     }
 
-    public void  addSearchResultToMap(List<Restaurant> list){
+    public void addSearchResultToMap(List<Restaurant> list) {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for(Fragment fragment : fragments){
-            if(fragment instanceof MapFragment){
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof MapFragment) {
                 ((MapFragment) fragment).addSearchResult(list);
                 return;
             }
         }
     }
 
-    public void  moveToPoint(int pos){
+    public void moveToPoint(int pos) {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for(Fragment fragment : fragments){
-            if(fragment instanceof MapFragment){
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof MapFragment) {
                 ((MapFragment) fragment).moveCamera(pos);
                 return;
             }
@@ -106,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public CustomViewpager getViewPager(){
+    public CustomViewpager getViewPager() {
         return viewPager;
     }
 
@@ -126,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.im_search:
                 replaceFragment(new SearchFragment(), AnimatorUtils.getAnimationBottomToTop());
                 break;

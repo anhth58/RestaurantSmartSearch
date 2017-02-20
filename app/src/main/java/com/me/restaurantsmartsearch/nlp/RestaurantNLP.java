@@ -31,6 +31,16 @@ public class RestaurantNLP {
         }
     }
 
+    public static ContextNLP query(String query){
+        String type = getCategory(query);
+        String[][] names = getNamesInQuery(query);
+        ContextNLP context = new ContextNLP(type);
+        for (int i=0; i<names.length; i++){
+            context.putAttribute(names[i][0], names[i][1]);
+        }
+        return context;
+    }
+
     public static String[][] getNamesInQuery(String query){
         String[] tokens = WhitespaceTokenizer.INSTANCE.tokenize(query);
         Span[] spans = nameFinder.find(tokens);
