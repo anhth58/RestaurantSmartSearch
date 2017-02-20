@@ -18,13 +18,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.me.restaurantsmartsearch.R;
-import com.me.restaurantsmartsearch.activity.MainActivity;
 import com.me.restaurantsmartsearch.activity.RestaurantDetailActivity;
 import com.me.restaurantsmartsearch.adapter.RestaurantAdapter;
 import com.me.restaurantsmartsearch.adapter.SearchHistoryAdapter;
-import com.me.restaurantsmartsearch.adapter.SuggestAdapter;
 import com.me.restaurantsmartsearch.async.SearchAsyncTask;
 import com.me.restaurantsmartsearch.async.SuggestAsyncTask;
 import com.me.restaurantsmartsearch.model.Restaurant;

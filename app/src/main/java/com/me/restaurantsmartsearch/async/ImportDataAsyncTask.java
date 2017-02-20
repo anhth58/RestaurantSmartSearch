@@ -3,19 +3,15 @@ package com.me.restaurantsmartsearch.async;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.Constant;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,8 +19,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Laptop88T on 11/16/2016.

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.me.restaurantsmartsearch.R;
-import com.me.restaurantsmartsearch.model.Restaurant;
 
 import java.util.ArrayList;
 
