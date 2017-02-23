@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import opennlp.tools.parser.Cons;
+
 /**
  * Created by Laptop88T on 11/16/2016.
  */
@@ -41,7 +43,7 @@ public class SuggestAsyncTask extends AsyncTask<Void, Integer, String> {
             if (i < arr.length - 1) s += arr[i] + "+";
             else s += arr[i];
         }
-        String querry = Constant.IP_SERVER_HTTP + "/mydb/_suggest?pretty";
+        String querry = Constant.IP_SERVER_HTTP + "/" + Constant.INDEX_NAME + "/_suggest?pretty";
         httpGet = new HttpPost(querry);
         httpGet.setHeader("Authorization", Constant.AUTHORIZATION);
         httpGet.setHeader("Content-type", "application/json");
@@ -50,10 +52,10 @@ public class SuggestAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONObject jsonSuggest = new JSONObject();
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonCompletion.put("field","suggest");
+            jsonCompletion.put("field", "suggest");
             jsonSuggest.put("prefix", AccentRemover.removeAccent(querryString));
-            jsonSuggest.put("completion",jsonCompletion);
-            jsonObject.put("restaurant-suggest",jsonSuggest);
+            jsonSuggest.put("completion", jsonCompletion);
+            jsonObject.put("restaurant-suggest", jsonSuggest);
             StringEntity entity = new StringEntity(jsonObject.toString(), "UTF-8");
             httpGet.setEntity(entity);
         } catch (UnsupportedEncodingException e) {
@@ -61,7 +63,7 @@ public class SuggestAsyncTask extends AsyncTask<Void, Integer, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("Request String",jsonObject.toString());
+        Log.d("Request String", jsonObject.toString());
         String responseString = "";
         try {
             HttpResponse httpResponse = httpclient.execute(httpGet);
