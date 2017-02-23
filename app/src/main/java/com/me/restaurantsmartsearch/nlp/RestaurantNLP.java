@@ -24,8 +24,8 @@ public class RestaurantNLP {
         AssetManager am = mainActivity.getAssets();
 
         try{
-            nameFinder = new NameFinderME(new TokenNameFinderModel(am.open("restaurants-ner.bin")));
-            categorizer = new DocumentCategorizerME(new DoccatModel(am.open("restaurants-dc.bin")));
+            nameFinder = new NameFinderME(new TokenNameFinderModel(am.open("restaurants-ner-v2.bin")));
+            categorizer = new DocumentCategorizerME(new DoccatModel(am.open("restaurants-dc-v2.bin")));
         }catch (Exception e){
             System.out.println(e.toString());
         }

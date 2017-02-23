@@ -5,7 +5,7 @@ giá_rẻ Quán ăn giá rẻ
 giá_rẻ Quán ăn giá rẻ gần đây	
 giá_rẻ Quán ăn giá sinh viên	
 giá_rẻ cơm rang ở đường Cầu Giấy	
-theo_nơi lẩu ở đường Cầu Giấy	
+theo_nơi lẩu ở đường Cầu Giấy
 theo_nơi lẩu mèo ở đường Cầu Giấy	
 theo_nơi lẩu gần đường Cầu Giấy	
 theo_nơi lẩu mèo gần đường Cầu Giấy
@@ -21,7 +21,7 @@ gần_đây Cần tìm quán ăn buffer gần đây
 gần_đây Đồ uống cách đây 15 phút đi bộ	
 gần_đây Nhà hàng ngay đây	
 gần_đây Nhà hàng ngon, rẻ, gần đây	
-gần_đây Quán gà rángần nhất	
+gần_đây Quán gà rán gần nhất	
 gần_đây Quán ăn gần Đại học QGHN	
 gần_đây Quán ăn gần đây	
 gần_đây Quán ăn gần đường Cầu Giấy
