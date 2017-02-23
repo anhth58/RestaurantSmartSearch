@@ -1,8 +1,10 @@
 package com.me.restaurantsmartsearch.async;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.me.restaurantsmartsearch.utils.Constant;
+import com.me.restaurantsmartsearch.utils.Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,7 +37,7 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
             if (i < arr.length - 1) s += arr[i] + "+";
             else s += arr[i];
         }
-        String querry = Constant.IP_SERVER_HTTP + "/mydb/_search?q=name%3A(" + s + ")";
+        String querry = Constant.IP_SERVER_HTTP + "/" + Constant.INDEX_NAME + "/_search?q=name%3A(" + s + ")";
         httpGet = new HttpGet(querry);
         httpGet.setHeader("Authorization", Constant.AUTHORIZATION);
         httpGet.setHeader("Content-type", "application/json");
