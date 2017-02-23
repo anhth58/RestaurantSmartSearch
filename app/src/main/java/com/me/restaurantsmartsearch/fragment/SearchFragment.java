@@ -1,6 +1,7 @@
 package com.me.restaurantsmartsearch.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -29,6 +30,7 @@ import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.nlp.ContextNLP;
 import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
+import com.me.restaurantsmartsearch.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -248,7 +250,7 @@ public class SearchFragment extends BaseFragment {
                 }
             }
         });
-        searchAsyncTask.execute();
+        searchAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void getSuggestOffline() {
@@ -296,7 +298,7 @@ public class SearchFragment extends BaseFragment {
                 }
             }
         });
-        suggestAsyncTask.execute();
+        suggestAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void backToSearch() {

@@ -1,8 +1,10 @@
 package com.me.restaurantsmartsearch.async;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.me.restaurantsmartsearch.utils.Constant;
+import com.me.restaurantsmartsearch.utils.Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
