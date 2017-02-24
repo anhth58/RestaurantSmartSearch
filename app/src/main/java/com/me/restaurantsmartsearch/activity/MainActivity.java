@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CustomViewpager viewPager;
     private ImageView imSearch, imSetting;
     private FloatingActionButton fab;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void importDataToElasticServer() {
         Realm.init(MainActivity.this);
-        Realm realm = Realm.getDefaultInstance().getDefaultInstance();
+        realm = Realm.getDefaultInstance().getDefaultInstance();
         ArrayList<Restaurant> list = new ArrayList(realm.where(Restaurant.class).findAll());
         for (int i = 0; i < list.size(); i++) {
             Restaurant restaurant = list.get(i);
@@ -126,5 +127,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 replaceFragment(new SearchFragment(), AnimatorUtils.getAnimationBottomToTop());
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

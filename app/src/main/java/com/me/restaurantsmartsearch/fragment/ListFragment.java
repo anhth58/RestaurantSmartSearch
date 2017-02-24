@@ -52,6 +52,7 @@ public class ListFragment extends BaseFragment {
     ArrayList<String> suggestList = new ArrayList<>();
     SuggestAdapter suggestAdapter;
     boolean isSearchOnline = false;
+    Realm realm;
 
     @Nullable
     @Override
@@ -166,7 +167,7 @@ public class ListFragment extends BaseFragment {
         super.onResume();
         if (listResult.size() == 0) {
             Realm.init(getActivity());
-            Realm realm = Realm.getDefaultInstance();
+            realm = Realm.getDefaultInstance();
             listResult = new ArrayList<>(realm.where(Restaurant.class).findAll().subList(0, 10));
             restaurantAdapter = new RestaurantAdapter(getActivity(), listResult);
             lvRestaurant.setAdapter(restaurantAdapter);
@@ -185,7 +186,7 @@ public class ListFragment extends BaseFragment {
                     lvSugest.setVisibility(View.GONE);
                     listResult.clear();
                     Realm.init(getActivity());
-                    Realm realm = Realm.getDefaultInstance();
+                    realm = Realm.getDefaultInstance();
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject(Constant.HITS);
                     JSONArray jsonArray = jsonObject1.getJSONArray(Constant.HITS);
@@ -234,5 +235,11 @@ public class ListFragment extends BaseFragment {
             }
         });
         suggestAsyncTask.execute();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

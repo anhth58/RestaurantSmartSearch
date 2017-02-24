@@ -54,6 +54,8 @@ public class SearchFragment extends BaseFragment {
     private GridView mGvResult;
     private ArrayList<String> mListHistorySearch = new ArrayList<>();
     private SearchHistoryAdapter searchHistoryAdapter;
+    private Realm realm;
+    private boolean isSearching = false;
 
     ArrayList<Restaurant> listResult = new ArrayList<>();
     RestaurantAdapter restaurantAdapter;
@@ -67,8 +69,8 @@ public class SearchFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fm_search, null);
 
         initView(rootView);
-        showSoftKeyboard(mInputSearch);
         initListener();
+        getSuggestOffline();
 
         return rootView;
     }
@@ -98,6 +100,7 @@ public class SearchFragment extends BaseFragment {
                 listResult.clear();
                 mListSearch.setVisibility(View.GONE);
                 mInputSearch.setText(sSearch.trim());
+                mInputSearch.setSelection(sSearch.length());
                 searchOnline(sSearch.trim());
             }
 
@@ -107,6 +110,7 @@ public class SearchFragment extends BaseFragment {
                 restaurantAdapter.notifyDataSetChanged();
                 mListSearch.setVisibility(View.GONE);
                 mInputSearch.setText(sSearch.trim());
+                mInputSearch.setSelection(sSearch.length());
                 searchOnline(sSearch.trim());
             }
         });
@@ -226,7 +230,7 @@ public class SearchFragment extends BaseFragment {
                     mListSearch.setVisibility(View.GONE);
                     listResult.clear();
                     Realm.init(getActivity());
-                    Realm realm = Realm.getDefaultInstance();
+                    realm = Realm.getDefaultInstance();
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject(Constant.HITS);
                     JSONArray jsonArray = jsonObject1.getJSONArray(Constant.HITS);
@@ -257,7 +261,7 @@ public class SearchFragment extends BaseFragment {
         mListSearch.setVisibility(View.VISIBLE);
         showSoftKeyboard(mInputSearch);
         Realm.init(getActivity());
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
         ArrayList<Restaurant> temp = new ArrayList<>(realm.where(Restaurant.class).findAll().subList(0, 10));
         mListHistorySearch.clear();
         for (int i = 0; i < temp.size(); i++) {
@@ -303,5 +307,11 @@ public class SearchFragment extends BaseFragment {
         mListSearch.setVisibility(View.VISIBLE);
         lvRestaurant.setVisibility(View.GONE);
         showSoftKeyboard(mInputSearch);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

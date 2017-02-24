@@ -3,6 +3,7 @@ package com.me.restaurantsmartsearch.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.me.restaurantsmartsearch.R;
 import com.me.restaurantsmartsearch.model.Restaurant;
@@ -40,17 +41,12 @@ public class SplashScreen extends Activity {
         if (realm.isEmpty()) {
             importDataFromJSONFile();
         } else {
-            new Thread(new Runnable() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        Thread.sleep(1500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     startActivity(new Intent(SplashScreen.this, MainActivity.class));
                 }
-            }).run();
+            },1500);
         }
     }
 
