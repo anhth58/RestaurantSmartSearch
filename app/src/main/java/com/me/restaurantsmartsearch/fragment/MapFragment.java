@@ -108,13 +108,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     public void addSearchResult(List<Restaurant> list) {
         markers.clear();
-        for (Restaurant restaurant : list){
+        for (Restaurant restaurant : list) {
             markers.add(mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(restaurant.getLatitude(), restaurant.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_food_map)).title(restaurant.getName())));
         }
     }
 
     public void moveCamera(int pos) {
-        if(markers != null && markers.size() > pos){
+        if (markers != null && markers.size() > pos) {
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markers.get(pos).getPosition(), 15));
             markers.get(pos).showInfoWindow();
         }

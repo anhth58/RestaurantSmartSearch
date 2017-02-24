@@ -43,6 +43,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_fragment);
+
+        initMap();
+        initVIew();
+        initListener();
+    }
+
+    public void initMap() {
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -53,8 +60,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        imDirect = (ImageView) findViewById(R.id.im_direct);
+    }
 
+    public void initVIew() {
+        imDirect = (ImageView) findViewById(R.id.im_direct);
+    }
+
+    public void initListener() {
         imDirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +76,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //                        .color(Color.RED));
             }
         });
-
     }
 
     @Override
@@ -94,8 +105,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mGoogleMap != null) {
                 //mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
-                myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
-                if(getIntent()!= null){
+                myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
+                if (getIntent() != null) {
                     restaurant = getIntent().getParcelableExtra("restaurant");
                     moveCamera(restaurant);
                 }
@@ -124,7 +135,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     public void moveCamera(Restaurant res) {
         restaurantMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(res.getLatitude(), res.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_food_map)).title(res.getName()));
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(res.getLatitude(),res.getLongitude()), 17));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(res.getLatitude(), res.getLongitude()), 17));
         restaurantMarker.showInfoWindow();
     }
 }

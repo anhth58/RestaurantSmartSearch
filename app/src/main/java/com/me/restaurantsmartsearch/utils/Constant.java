@@ -16,6 +16,8 @@ public class Constant {
     //fields name
 
     public static final String NAME = "name";
+    public static final String ID = "id";
+    public static final String _ID = "_id";
     public static final String ADDRESS = "address";
     public static final String TIME = "time";
     public static final String TYPE = "type";
@@ -40,4 +42,7 @@ public class Constant {
     public static final String PREFIX = "prefix";
     public static final String COMPLETION = "completion";
     public static final String RESTAURANT_SUGGEST = "restaurant-suggest";
+    public static final String OPTIONS = "options";
+    public static final String _SOURCE = "_source";
+    public static final String HITS = "hits";
 }

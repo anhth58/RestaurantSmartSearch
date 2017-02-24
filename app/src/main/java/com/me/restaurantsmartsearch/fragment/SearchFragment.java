@@ -30,7 +30,7 @@ import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.nlp.ContextNLP;
 import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
-import com.me.restaurantsmartsearch.utils.Utils;
+import com.me.restaurantsmartsearch.utils.Constant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,34 +68,8 @@ public class SearchFragment extends BaseFragment {
 
         initView(rootView);
         showSoftKeyboard(mInputSearch);
-
-        searchHistoryAdapter = new SearchHistoryAdapter(getActivity(), mListHistorySearch, new SearchHistoryAdapter.IOnCellListView() {
-            @Override
-            public void onRightClick(String sSearch) {
-                mInputSearch.setText(sSearch.trim());
-                mInputSearch.setSelection(sSearch.length());
-            }
-
-            @Override
-            public void onMidClick(String sSearch, int position) {
-                Toast.makeText(getActivity(), "inside onMidClick()", Toast.LENGTH_LONG).show();
-                listResult.clear();
-                mListSearch.setVisibility(View.GONE);
-                mInputSearch.setText(sSearch.trim());
-                searchOnline(sSearch.trim());
-            }
-
-            @Override
-            public void onLeftClick(String sSearch) {
-                listResult.clear();
-                restaurantAdapter.notifyDataSetChanged();
-                mListSearch.setVisibility(View.GONE);
-                mInputSearch.setText(sSearch.trim());
-                searchOnline(sSearch.trim());
-            }
-        });
-        mListSearch.setAdapter(searchHistoryAdapter);
         initListener();
+
         return rootView;
     }
 
@@ -112,6 +86,31 @@ public class SearchFragment extends BaseFragment {
     }
 
     public void initListener() {
+        searchHistoryAdapter = new SearchHistoryAdapter(getActivity(), mListHistorySearch, new SearchHistoryAdapter.IOnCellListView() {
+            @Override
+            public void onRightClick(String sSearch) {
+                mInputSearch.setText(sSearch.trim());
+                mInputSearch.setSelection(sSearch.length());
+            }
+
+            @Override
+            public void onMidClick(String sSearch, int position) {
+                listResult.clear();
+                mListSearch.setVisibility(View.GONE);
+                mInputSearch.setText(sSearch.trim());
+                searchOnline(sSearch.trim());
+            }
+
+            @Override
+            public void onLeftClick(String sSearch) {
+                listResult.clear();
+                restaurantAdapter.notifyDataSetChanged();
+                mListSearch.setVisibility(View.GONE);
+                mInputSearch.setText(sSearch.trim());
+                searchOnline(sSearch.trim());
+            }
+        });
+        mListSearch.setAdapter(searchHistoryAdapter);
 
         mInputSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,7 +204,7 @@ public class SearchFragment extends BaseFragment {
 
     public void searchOnline(String s) {
         //debug purpose, remove later
-        String toast="";
+        String toast = "";
         //example nlp
         ContextNLP result = RestaurantNLP.query(s);
         toast += "Type: " + result.getType() + "\n";
@@ -230,11 +229,11 @@ public class SearchFragment extends BaseFragment {
                     Realm.init(getActivity());
                     Realm realm = Realm.getDefaultInstance();
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONObject jsonObject1 = jsonObject.getJSONObject("hits");
-                    JSONArray jsonArray = jsonObject1.getJSONArray("hits");
+                    JSONObject jsonObject1 = jsonObject.getJSONObject(Constant.HITS);
+                    JSONArray jsonArray = jsonObject1.getJSONArray(Constant.HITS);
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        int k = jsonArray.getJSONObject(i).optInt("_id");
-                        listResult.add(realm.where(Restaurant.class).equalTo("id", k - 1).findFirst());
+                        int k = jsonArray.getJSONObject(i).optInt(Constant._ID);
+                        listResult.add(realm.where(Restaurant.class).equalTo(Constant.ID, k - 1).findFirst());
                     }
                     if (listResult.size() > 0) {
                         lvRestaurant.setVisibility(View.VISIBLE);
@@ -275,17 +274,15 @@ public class SearchFragment extends BaseFragment {
                 try {
                     mListHistorySearch.clear();
                     JSONObject jsonObject = new JSONObject(s);
-                    JSONArray jsonSuggestArray = jsonObject.getJSONArray("restaurant-suggest");
+                    JSONArray jsonSuggestArray = jsonObject.getJSONArray(Constant.RESTAURANT_SUGGEST);
                     JSONObject jsonSuggest = jsonSuggestArray.getJSONObject(0);
-                    JSONArray options = jsonSuggest.getJSONArray("options");
-                    Log.d("SIZE", options.length() + "");
+                    JSONArray options = jsonSuggest.getJSONArray(Constant.OPTIONS);
                     for (int i = 0; i < options.length(); i++) {
                         JSONObject option = options.getJSONObject(i);
-                        JSONObject source = option.getJSONObject("_source");
-                        JSONObject suggest = source.getJSONArray("suggest").getJSONObject(0);
-                        String suggestString = suggest.getString("input");
+                        JSONObject source = option.getJSONObject(Constant._SOURCE);
+                        JSONObject suggest = source.getJSONArray(Constant.SUGGEST).getJSONObject(0);
+                        String suggestString = suggest.getString(Constant.INPUT);
                         mListHistorySearch.add(suggestString);
-                        Log.d("String", suggestString);
                     }
 
                     if (mListHistorySearch.size() > 0 && !isSearchOnline) {

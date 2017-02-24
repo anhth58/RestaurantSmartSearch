@@ -31,32 +31,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TabLayout tabLayout;
     private CustomViewpager viewPager;
     private ImageView imSearch, imSetting;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         //init nlp
         RestaurantNLP.init(this);
+        initView();
+        initListener();
+    }
 
+    public void initView() {
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        viewPager = (CustomViewpager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        imSearch = (ImageView) findViewById(R.id.im_search);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    public void initListener() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //importDataToElasticServer();
             }
         });
-
-        viewPager = (CustomViewpager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        imSearch = (ImageView) findViewById(R.id.im_search);
         imSearch.setOnClickListener(this);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
     }
 
     public void importDataToElasticServer() {

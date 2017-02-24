@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
  */
 public class RestaurantDetailActivity extends AppCompatActivity {
     private TextView tvName, tvServeScore, tvQualityScore, tvLocationScore, tvSpaceScore, tvPriceScore, tvLocation, tvType, tvTime, tvPrice;
-    private ImageView imCover, imLocation,imBack;
+    private ImageView imCover, imLocation, imBack;
     Restaurant restaurant;
 
     @Override
@@ -25,9 +25,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_detail);
         initView();
         restaurant = getIntent().getParcelableExtra("restaurant");
-        if(restaurant != null){
+        if (restaurant != null) {
             fillData();
         }
+        initListener();
     }
 
     public void initView() {
@@ -48,13 +49,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         imBack = (ImageView) findViewById(R.id.im_back);
 
     }
-    public void fillData(){
+
+    public void fillData() {
         tvName.setText(restaurant.getName());
-        tvServeScore.setText(restaurant.getpServe()+"");
-        tvQualityScore.setText(restaurant.getpQuality()+"");
-        tvLocationScore.setText(restaurant.getpLocation()+"");
-        tvPriceScore.setText(restaurant.getpCost()+"");
-        tvSpaceScore.setText(restaurant.getpSpace()+"");
+        tvServeScore.setText(restaurant.getpServe() + "");
+        tvQualityScore.setText(restaurant.getpQuality() + "");
+        tvLocationScore.setText(restaurant.getpLocation() + "");
+        tvPriceScore.setText(restaurant.getpCost() + "");
+        tvSpaceScore.setText(restaurant.getpSpace() + "");
         tvLocation.setText(restaurant.getAddress());
         tvPrice.setText(restaurant.getPrice());
         tvType.setText(restaurant.getType().split("-")[0].split(",")[0]);
@@ -64,11 +66,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 .placeholder(R.color.gray)
                 .error(R.color.gray)
                 .into(imCover);
+    }
+
+    private void initListener() {
         imLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RestaurantDetailActivity.this, MapActivity.class);
-                intent.putExtra("restaurant", restaurant);
+                if (restaurant != null) intent.putExtra("restaurant", restaurant);
                 startActivity(intent);
             }
         });

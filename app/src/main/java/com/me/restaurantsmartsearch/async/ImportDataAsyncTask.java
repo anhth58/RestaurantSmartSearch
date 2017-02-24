@@ -56,20 +56,20 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONObject jsonSuggest1 = new JSONObject();
         JSONArray suggest = new JSONArray();
         try {
-            jsonObject.put("name", AccentRemover.removeAccent(name));
-            jsonObject.put("address", AccentRemover.removeAccent(address));
-            jsonObject.put("description", AccentRemover.removeAccent(description));
-            jsonObject.put("time", AccentRemover.removeAccent(time));
-            jsonObject.put("type", AccentRemover.removeAccent(type));
-            jsonObject.put("longitude", longitude);
-            jsonObject.put("latitude", latitude);
-            jsonSuggest.put("input",name);
-            jsonSuggest.put("weight",id+1000);
-            jsonSuggest1.put("input",AccentRemover.removeAccent(name));
-            jsonSuggest1.put("weight",id + 10);
+            jsonObject.put(Constant.NAME, AccentRemover.removeAccent(name));
+            jsonObject.put(Constant.ADDRESS, AccentRemover.removeAccent(address));
+            jsonObject.put(Constant.DESCRIPTION, AccentRemover.removeAccent(description));
+            jsonObject.put(Constant.TIME, AccentRemover.removeAccent(time));
+            jsonObject.put(Constant.TYPE, AccentRemover.removeAccent(type));
+            jsonObject.put(Constant.LONGITUDE, longitude);
+            jsonObject.put(Constant.LATITUDE, latitude);
+            jsonSuggest.put(Constant.INPUT, name);
+            jsonSuggest.put(Constant.WEIGHT, id + 1000);
+            jsonSuggest1.put(Constant.INPUT, AccentRemover.removeAccent(name));
+            jsonSuggest1.put(Constant.WEIGHT, id + 10);
             suggest.put(jsonSuggest);
             suggest.put(jsonSuggest1);
-            jsonObject.put("suggest", suggest);
+            jsonObject.put(Constant.SUGGEST, suggest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -90,9 +90,8 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
                 // Server response
                 responseString = EntityUtils.toString(r_entity);
             } else {
-                responseString = "Error occurred! Http Status Code: " + statusCode;
+                responseString = "Http Status Code: " + statusCode;
             }
-            Log.d("UploadFileToServer", "Response: " + responseString);
         } catch (IOException e) {
             e.printStackTrace();
         }

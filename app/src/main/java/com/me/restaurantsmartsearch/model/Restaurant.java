@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Laptop88T on 11/15/2016.
  */
-public class Restaurant extends RealmObject implements Parcelable{
+public class Restaurant extends RealmObject implements Parcelable {
     @PrimaryKey
     private int id;
     private String name;
@@ -45,7 +45,7 @@ public class Restaurant extends RealmObject implements Parcelable{
         pCost = in.readDouble();
     }
 
-    public Restaurant(){
+    public Restaurant() {
 
     }
 
