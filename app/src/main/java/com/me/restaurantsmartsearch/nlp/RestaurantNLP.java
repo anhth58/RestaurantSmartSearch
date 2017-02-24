@@ -4,6 +4,12 @@ import android.content.res.AssetManager;
 
 import com.me.restaurantsmartsearch.activity.MainActivity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import opennlp.tools.doccat.DoccatModel;
 import opennlp.tools.doccat.DocumentCategorizerME;
 import opennlp.tools.namefind.NameFinderME;
@@ -16,7 +22,6 @@ import opennlp.tools.util.Span;
  */
 
 public class RestaurantNLP {
-
     public static NameFinderME nameFinder;
     public static DocumentCategorizerME categorizer;
 
@@ -32,30 +37,30 @@ public class RestaurantNLP {
     }
 
     public static ContextNLP query(String query){
-        String type = getCategory(query);
-        String[][] names = getNamesInQuery(query);
-        ContextNLP context = new ContextNLP(type);
-        for (int i=0; i<names.length; i++){
-            context.putAttribute(names[i][0], names[i][1]);
-        }
-        return context;
+        Set<String> categoriesIn = getCategory(query);
+        HashMap<String, String> names = getNamesInQuery(query);
+        return new ContextNLP(categoriesIn, names, query);
     }
 
-    public static String[][] getNamesInQuery(String query){
+    public static HashMap<String, String> getNamesInQuery(String query){
         String[] tokens = WhitespaceTokenizer.INSTANCE.tokenize(query);
         Span[] spans = nameFinder.find(tokens);
         String[] names = Span.spansToStrings(spans, tokens);
-        int len = spans.length;
-        String[][] result = new String[len][2];
+        HashMap<String, String> result = new HashMap<>();
         for (int i=0; i<spans.length; i++){
-            result[i][0] = spans[i].getType();
-            result[i][1] = names[i];
+            result.put(spans[i].getType(), names[i]);
         }
         return result;
     }
 
-    public static String getCategory(String query){
-        double[] dcOutComes = categorizer.categorize(query);
-        return categorizer.getBestCategory(dcOutComes);
+    public static Set<String> getCategory(String query){
+//        double[] dcOutComes = categorizer.categorize(query);
+        Map<String, Double> scoreMap = categorizer.scoreMap(query);
+        Set<String> categoriesIn = new HashSet<>();
+        for (Map.Entry<String, Double> entry : scoreMap.entrySet())
+        {
+            if (entry.getValue() > 0.1) categoriesIn.add(entry.getKey());
+        }
+        return  categoriesIn;
     }
 }

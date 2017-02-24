@@ -207,8 +207,7 @@ public class SearchFragment extends BaseFragment {
         String toast = "";
         //example nlp
         ContextNLP result = RestaurantNLP.query(s);
-        toast += "Type: " + result.getType() + "\n";
-        toast += "Location: " + result.getLocation();
+        System.out.println(result.getHashMap());
         /*
         * Right now just three types are available:
         * ContextNLP.TYPE_CHEAP, ContextNLP.TYPE_NEAR, ContextNLP.TYPE_LOCATION
