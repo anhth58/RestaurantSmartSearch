@@ -1,7 +1,6 @@
 package com.me.restaurantsmartsearch.async;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.Constant;
@@ -18,8 +17,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
-import opennlp.tools.parser.Cons;
 
 /**
  * Created by Laptop88T on 11/16/2016.
@@ -52,18 +49,15 @@ public class SuggestAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONObject jsonSuggest = new JSONObject();
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonCompletion.put("field", "suggest");
-            jsonSuggest.put("prefix", AccentRemover.removeAccent(querryString));
-            jsonSuggest.put("completion", jsonCompletion);
-            jsonObject.put("restaurant-suggest", jsonSuggest);
+            jsonCompletion.put(Constant.FIELD, Constant.SUGGEST);
+            jsonSuggest.put(Constant.PREFIX, AccentRemover.removeAccent(querryString));
+            jsonSuggest.put(Constant.COMPLETION, jsonCompletion);
+            jsonObject.put(Constant.RESTAURANT_SUGGEST, jsonSuggest);
             StringEntity entity = new StringEntity(jsonObject.toString(), "UTF-8");
             httpGet.setEntity(entity);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (UnsupportedEncodingException | JSONException e) {
             e.printStackTrace();
         }
-        Log.d("Request String", jsonObject.toString());
         String responseString = "";
         try {
             HttpResponse httpResponse = httpclient.execute(httpGet);
@@ -74,9 +68,8 @@ public class SuggestAsyncTask extends AsyncTask<Void, Integer, String> {
                 // Server response
                 responseString = EntityUtils.toString(r_entity);
             } else {
-                responseString = "Error occurred! Http Status Code: " + statusCode;
+                responseString = "Http Status Code: " + statusCode;
             }
-            //Log.d("Request String",responseString);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,6 +83,6 @@ public class SuggestAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     public interface OnSuggestComplete {
-        public void onSuggestComplete(String s);
+        void onSuggestComplete(String s);
     }
 }

@@ -1,10 +1,8 @@
 package com.me.restaurantsmartsearch.async;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.me.restaurantsmartsearch.utils.Constant;
-import com.me.restaurantsmartsearch.utils.Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,7 +50,7 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
                 // Server response
                 responseString = EntityUtils.toString(r_entity);
             } else {
-                responseString = "Error occurred! Http Status Code: " + statusCode;
+                responseString = "Http Status Code: " + statusCode;
             }
         } catch (IOException e) {
             e.printStackTrace();

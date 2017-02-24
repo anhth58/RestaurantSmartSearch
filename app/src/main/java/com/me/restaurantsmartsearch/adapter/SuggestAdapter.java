@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by Laptop88T on 1/5/2017.
  */
-public class SuggestAdapter extends BaseAdapter{
+public class SuggestAdapter extends BaseAdapter {
     ArrayList<String> list = new ArrayList<>();
     Context mContext;
 
@@ -23,6 +23,7 @@ public class SuggestAdapter extends BaseAdapter{
         mContext = context;
         list = _list;
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -54,10 +55,12 @@ public class SuggestAdapter extends BaseAdapter{
         holder.tvName.setText(string);
         return convertView;
     }
+
     private class ViewHolder {
         TextView tvName;
         ImageView imArrow;
     }
+
     public void setData(ArrayList<String> restaurant) {
         this.list = restaurant;
         notifyDataSetChanged();

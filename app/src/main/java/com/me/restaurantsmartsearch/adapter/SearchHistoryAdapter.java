@@ -30,7 +30,7 @@ public class SearchHistoryAdapter extends BaseAdapter {
         void onLeftClick(String sSearch);
     }
 
-    public SearchHistoryAdapter(Context context, ArrayList<String> _data,IOnCellListView iOnCellListView) {
+    public SearchHistoryAdapter(Context context, ArrayList<String> _data, IOnCellListView iOnCellListView) {
         mInflater = LayoutInflater.from(context);
         data = _data;
         mCallBackListener = iOnCellListView;
@@ -73,13 +73,13 @@ public class SearchHistoryAdapter extends BaseAdapter {
         holder.textContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCallBackListener.onMidClick(data.get(position),position);
+                mCallBackListener.onMidClick(data.get(position), position);
             }
         });
         return convertView;
     }
 
-    public void setData(ArrayList<String> data){
+    public void setData(ArrayList<String> data) {
         this.data = data;
         notifyDataSetChanged();
     }
