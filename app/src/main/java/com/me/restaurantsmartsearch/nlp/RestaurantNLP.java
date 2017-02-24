@@ -24,6 +24,8 @@ import opennlp.tools.util.Span;
 public class RestaurantNLP {
     public static NameFinderME nameFinder;
     public static DocumentCategorizerME categorizer;
+    private static int NUM_CATEGORY = 4;
+    private static float threshouldScore = 0.1f;
 
     public static void init(MainActivity mainActivity){
         AssetManager am = mainActivity.getAssets();
@@ -56,11 +58,17 @@ public class RestaurantNLP {
     public static Set<String> getCategory(String query){
 //        double[] dcOutComes = categorizer.categorize(query);
         Map<String, Double> scoreMap = categorizer.scoreMap(query);
+        System.out.print(scoreMap);
         Set<String> categoriesIn = new HashSet<>();
+        int countCategoryIn = 0;
+        System.out.println(threshouldScore + "--");
         for (Map.Entry<String, Double> entry : scoreMap.entrySet())
         {
-            if (entry.getValue() > 0.1) categoriesIn.add(entry.getKey());
+            if (entry.getValue() >= threshouldScore) countCategoryIn++;
+            if (entry.getValue() >= 0.1) categoriesIn.add(entry.getKey());
         }
+        System.out.println(countCategoryIn);
+        if (countCategoryIn >= 4) categoriesIn.clear();
         return  categoriesIn;
     }
 }
