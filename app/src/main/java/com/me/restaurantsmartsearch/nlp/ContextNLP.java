@@ -22,6 +22,12 @@ public class ContextNLP {
     public static String FIELD_NEAR_LOCATION    = "nearLocation";
 
     private HashMap<String, String> attrsMap = new HashMap<>();
+    public ContextNLP(String type, String name, String address, String nearLocation){
+        attrsMap.put(FIELD_NAME, name);
+        attrsMap.put(FIELD_TYPE, type);
+        attrsMap.put(FIELD_ADDRESS, address);
+        attrsMap.put(FIELD_NEAR_LOCATION, nearLocation);
+    }
 
     public ContextNLP(Set<String> categoryIn, HashMap<String, String> names, String query){
         //check if in cheap category
