@@ -125,6 +125,7 @@ public class RestaurantNLP {
     }
 
     public static ContextNLP query(String query){
+        query = query.toLowerCase();
         ContextNLP context = isFollowingRules(query);
         if (context == null){
             Set<String> categoriesIn = getCategory(query);
