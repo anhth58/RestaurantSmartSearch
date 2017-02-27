@@ -22,41 +22,54 @@ public class ContextNLP {
     public static String FIELD_NEAR_LOCATION    = "nearLocation";
 
     private HashMap<String, String> attrsMap = new HashMap<>();
+    public ContextNLP(String type, String name, String address, String nearLocation){
+        attrsMap.put(FIELD_NAME, name);
+        attrsMap.put(FIELD_TYPE, type);
+        attrsMap.put(FIELD_ADDRESS, address);
+        attrsMap.put(FIELD_NEAR_LOCATION, nearLocation);
+    }
 
     public ContextNLP(Set<String> categoryIn, HashMap<String, String> names, String query){
         //check if in cheap category
-        if(categoryIn.contains(TYPE_CHEAP)){
-            attrsMap.put(FIELD_TYPE, "Sinh viên");
-        }else{
-            attrsMap.put(FIELD_TYPE, "");
-        }
-
-        //check if name(food name) in query
-        if(names.containsKey(ATTR_NAME)){
-            attrsMap.put(FIELD_NAME, names.get(ATTR_NAME));
-        }else{
+        if (categoryIn.isEmpty()){
             attrsMap.put(FIELD_NAME, query);
-        }
-
-        //check if in near_here category
-        if(categoryIn.contains(TYPE_NEAR_HERE)){
-            attrsMap.put(FIELD_NEAR_LOCATION, "here");
+            attrsMap.put(FIELD_TYPE, "");
             attrsMap.put(FIELD_ADDRESS, "");
+            attrsMap.put(FIELD_NEAR_LOCATION, "");
         }else{
-            if(categoryIn.contains(TYPE_NEAR_BY)){
-                if(names.containsKey(ATTR_ADDRESS)){
-                    attrsMap.put(FIELD_NEAR_LOCATION, names.get(ATTR_ADDRESS));
-                }else{
-                    attrsMap.put(FIELD_NEAR_LOCATION, "");
-                }
+            if(categoryIn.contains(TYPE_CHEAP)){
+                attrsMap.put(FIELD_TYPE, "Sinh viên");
+            }else{
+                attrsMap.put(FIELD_TYPE, "");
+            }
+
+            //check if name(food name) in query
+            if(names.containsKey(ATTR_NAME)){
+                attrsMap.put(FIELD_NAME, names.get(ATTR_NAME));
+            }else{
+                attrsMap.put(FIELD_NAME, query);
+            }
+
+            //check if in near_here category
+            if(categoryIn.contains(TYPE_NEAR_HERE)){
+                attrsMap.put(FIELD_NEAR_LOCATION, "here");
                 attrsMap.put(FIELD_ADDRESS, "");
             }else{
-                if(names.containsKey(ATTR_ADDRESS)){
-                    attrsMap.put(FIELD_ADDRESS, names.get(ATTR_ADDRESS));
-                }else{
+                if(categoryIn.contains(TYPE_NEAR_BY)){
+                    if(names.containsKey(ATTR_ADDRESS)){
+                        attrsMap.put(FIELD_NEAR_LOCATION, names.get(ATTR_ADDRESS));
+                    }else{
+                        attrsMap.put(FIELD_NEAR_LOCATION, "");
+                    }
                     attrsMap.put(FIELD_ADDRESS, "");
+                }else{
+                    if(names.containsKey(ATTR_ADDRESS)){
+                        attrsMap.put(FIELD_ADDRESS, names.get(ATTR_ADDRESS));
+                    }else{
+                        attrsMap.put(FIELD_ADDRESS, "");
+                    }
+                    attrsMap.put(FIELD_NEAR_LOCATION, "");
                 }
-                attrsMap.put(FIELD_NEAR_LOCATION, "");
             }
         }
     }
