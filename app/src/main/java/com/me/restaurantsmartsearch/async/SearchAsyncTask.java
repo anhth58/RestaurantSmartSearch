@@ -8,14 +8,22 @@ import com.me.restaurantsmartsearch.utils.Constant;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import opennlp.tools.parser.Cons;
 
@@ -31,11 +39,12 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
     long longitude;
     String fields[];
 
-    public SearchAsyncTask(String querry,long lon,long lat, OnSearchComplete _onSearchComplete) {
+    public SearchAsyncTask(String querry, long lon, long lat, String _fields[], OnSearchComplete _onSearchComplete) {
         querryString = querry;
         latitude = lat;
         longitude = lon;
         onSearchComplete = _onSearchComplete;
+        fields = _fields;
     }
 
     protected String doInBackground(Void... params) {
@@ -50,6 +59,12 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONObject geoDistance = new JSONObject();
         JSONObject pinLocation = new JSONObject();
 
+        JSONArray jsonArray = new JSONArray();
+
+        for(int i = 0; i <fields.length; i++){
+            jsonArray.put(fields[i]);
+        }
+
         try {
             if (latitude != 0 || longitude != 0) {
                 pinLocation.put(Constant.LAT, latitude);
@@ -62,7 +77,7 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
 
             multiMatch.put(Constant.QUERY, querryString);
             multiMatch.put(Constant.TYPE, Constant.CROSS_FIELDS);
-            multiMatch.put(Constant.FIELDS, fields);
+            multiMatch.put(Constant.FIELDS, jsonArray);
             multiMatch.put(Constant.OPERATOR, Constant.OR);
             must.put(Constant.MULTI_MATCH, multiMatch);
 
@@ -107,9 +122,10 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         }
         * */
 
+        List<NameValuePair> paramsURI = new LinkedList<>();
+        paramsURI.add((new BasicNameValuePair("source", source.toString())));
 
-
-        String querry = Constant.IP_SERVER_HTTP + "/" + Constant.INDEX_NAME + "/_search?source="+ source.toString();
+        String querry = Constant.IP_SERVER_HTTP + "/" + Constant.INDEX_NAME + "/_search?" + URLEncodedUtils.format(paramsURI, "utf-8");
         httpGet = new HttpGet(querry);
         httpGet.setHeader("Authorization", Constant.AUTHORIZATION);
         httpGet.setHeader("Content-type", "application/json");

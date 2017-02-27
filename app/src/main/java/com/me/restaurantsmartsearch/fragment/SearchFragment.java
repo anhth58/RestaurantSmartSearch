@@ -222,10 +222,12 @@ public class SearchFragment extends BaseFragment {
         hideSoftKeyboard();
         prLoading.setVisibility(View.VISIBLE);
         long lon = 0, lat = 0;
-        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), lon, lat, new SearchAsyncTask.OnSearchComplete() {
+        String fields[] = {"name"};
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), lon, lat,fields, new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
                 try {
+                    Log.d("#ResponseString", response);
                     prLoading.setVisibility(View.GONE);
                     isSearchOnline = false;
                     mListSearch.setVisibility(View.GONE);
