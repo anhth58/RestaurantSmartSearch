@@ -20,6 +20,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import opennlp.tools.parser.Cons;
+
 /**
  * Created by Laptop88T on 11/16/2016.
  */
@@ -55,7 +57,14 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONObject jsonSuggest = new JSONObject();
         JSONObject jsonSuggest1 = new JSONObject();
         JSONArray suggest = new JSONArray();
+        JSONObject pin = new JSONObject();
+        JSONObject location = new JSONObject();
         try {
+            location.put(Constant.LAT, latitude);
+            location.put(Constant.LON, longitude);
+            pin.put(Constant.LOCATION, location);
+
+            jsonObject.put(Constant.PIN, pin);
             jsonObject.put(Constant.NAME, AccentRemover.removeAccent(name));
             jsonObject.put(Constant.ADDRESS, AccentRemover.removeAccent(address));
             jsonObject.put(Constant.DESCRIPTION, AccentRemover.removeAccent(description));

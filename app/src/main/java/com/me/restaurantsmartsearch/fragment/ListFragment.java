@@ -178,7 +178,8 @@ public class ListFragment extends BaseFragment {
     public void searchOnline() {
         isSearchOnline = true;
         hideSoftKeyboard();
-        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(edSearch.getText().toString()), new SearchAsyncTask.OnSearchComplete() {
+        long lon = 0,lat = 0;
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(edSearch.getText().toString()),lon,lat, new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
                 try {

@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //importDataToElasticServer();
+                importDataToElasticServer();
             }
         });
         imSearch.setOnClickListener(this);

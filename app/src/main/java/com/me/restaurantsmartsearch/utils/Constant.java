@@ -7,7 +7,7 @@ public class Constant {
     // config server
     public static final String IP_SERVER_HTTP = "https://5d9bf36518aa7ffd7ef1ee6b060d3e45.us-east-1.aws.found.io:9243";
     public static final String IP_SERVER_HTTPS = "https://5d9bf36518aa7ffd7ef1ee6b060d3e45.us-east-1.aws.found.io:9243";
-    public static final String API_IMPORT_DATA_HTTP = IP_SERVER_HTTP + "/mydb/restaurant/";
+    public static final String API_IMPORT_DATA_HTTP = IP_SERVER_HTTP + "/mydb2/restaurant/";
     public static final String API_IMPORT_DATA_HTTPS = IP_SERVER_HTTPS + "/mydb/restaurant/";
     public static final String INDEX_NAME = "mydb";
     public static final String DOCUMENT_NAME = "restaurant";
@@ -45,4 +45,24 @@ public class Constant {
     public static final String OPTIONS = "options";
     public static final String _SOURCE = "_source";
     public static final String HITS = "hits";
+    public static final String PIN = "pin";
+    public static final String LAT = "lat";
+    public static final String LON = "lon";
+    public static final String LOCATION = "location";
+    public static final String PIN_LOCATION = "pin.location";
+    public static final String GEO_DISTANCE = "geo_distance";
+    public static final String DISTANCE = "distance";
+    public static final String QUERY = "query";
+    public static final String CROSS_FIELDS = "cross_fields";
+    public static final String FIELDS = "fields";
+    public static final String OPERATOR = "operator";
+    public static final String OR = "or";
+    public static final String AND = "and";
+    public static final String MULTI_MATCH = "multi_match";
+    public static final String MUST = "must";
+    public static final String BOOL = "bool";
+    public static final String FILTER = "filter";
+
+    //near by radius
+    public static final String DISTANCE_RADIUS = "2km";
 }
