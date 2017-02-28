@@ -61,11 +61,13 @@ public class RestaurantAdapter extends BaseAdapter {
         holder.tvName.setText(restaurant.getName());
         holder.tvType.setText(restaurant.getType().split("-")[0].split(",")[0]);
         holder.tvAddress.setText(restaurant.getAddress());
-        Picasso.with(mContext)
-                .load(restaurant.getImage())
-                .placeholder(R.drawable.im_avatar)
-                .error(R.drawable.im_avatar)
-                .into(holder.imAvatar);
+        if(restaurant.getImage() != null){
+            Picasso.with(mContext)
+                    .load(restaurant.getImage())
+                    .placeholder(R.drawable.im_avatar)
+                    .error(R.drawable.im_avatar)
+                    .into(holder.imAvatar);
+        }
         return convertView;
     }
 
