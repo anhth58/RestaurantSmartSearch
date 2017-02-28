@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.me.restaurantsmartsearch.R;
 import com.me.restaurantsmartsearch.model.Restaurant;
+import com.me.restaurantsmartsearch.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,9 +91,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mGoogleMap != null) {
-                //mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
-//                myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
+            if (mGoogleMap != null && currentLocation != null) {
+                Utils.currentLat = currentLocation.getLatitude();
+                Utils.currentLong = currentLocation.getLongitude();
+                Log.d("currentLocation",Utils.currentLat+" "+Utils.currentLong);
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
+                myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
             }
         }
     }

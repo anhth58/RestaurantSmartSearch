@@ -15,6 +15,8 @@ import java.util.Date;
  * Created by Laptop88T on 2/9/2017.
  */
 public class Utils {
+    public static double currentLong;
+    public static double currentLat;
     public static int dp2px(int dp, Context context) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 context.getResources().getDisplayMetrics());

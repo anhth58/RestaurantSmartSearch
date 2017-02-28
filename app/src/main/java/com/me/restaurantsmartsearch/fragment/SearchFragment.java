@@ -34,6 +34,7 @@ import com.me.restaurantsmartsearch.nlp.ContextNLP;
 import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.Constant;
+import com.me.restaurantsmartsearch.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -240,13 +241,20 @@ public class SearchFragment extends BaseFragment {
             s = name.trim() + " " + address.trim();
         }
         Pin location = null;
+        nearLocation = AccentRemover.removeAccent(nearLocation.trim());
         if(!TextUtils.isEmpty(nearLocation)){
-            location = pinController.getPinByLocation(AccentRemover.removeAccent(nearLocation.trim()));
+            if(!nearLocation.equals("day"))location = pinController.getPinByLocation(nearLocation);
+            else {
+                location = new Pin();
+                location.setLongitude(Utils.currentLong);
+                location.setLatitude(Utils.currentLat);
+            }
             s = name;
         }
         if (location == null){
             location = new Pin();
         }
+
 
         SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
             @Override

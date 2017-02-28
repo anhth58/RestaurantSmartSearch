@@ -1,6 +1,7 @@
 package com.me.restaurantsmartsearch.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,12 +62,15 @@ public class RestaurantAdapter extends BaseAdapter {
         holder.tvName.setText(restaurant.getName());
         holder.tvType.setText(restaurant.getType().split("-")[0].split(",")[0]);
         holder.tvAddress.setText(restaurant.getAddress());
-        if(restaurant.getImage() != null){
+        if(!TextUtils.isEmpty(restaurant.getImage())){
             Picasso.with(mContext)
                     .load(restaurant.getImage())
                     .placeholder(R.drawable.im_avatar)
                     .error(R.drawable.im_avatar)
                     .into(holder.imAvatar);
+        }
+        else {
+            holder.imAvatar.setImageResource(R.drawable.im_avatar);
         }
         return convertView;
     }
