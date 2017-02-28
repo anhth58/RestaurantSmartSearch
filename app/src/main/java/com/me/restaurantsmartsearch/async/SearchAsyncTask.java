@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.Constant;
 
 import org.apache.http.HttpEntity;
@@ -38,13 +39,15 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
     double latitude;
     double longitude;
     String fields[];
+    String type;
 
-    public SearchAsyncTask(String querry, double lon, double lat, String _fields[], OnSearchComplete _onSearchComplete) {
+    public SearchAsyncTask(String querry, String _type, double lon, double lat, String _fields[], OnSearchComplete _onSearchComplete) {
         querryString = querry;
         latitude = lat;
         longitude = lon;
         onSearchComplete = _onSearchComplete;
         fields = _fields;
+        type = _type;
     }
 
     protected String doInBackground(Void... params) {
@@ -53,7 +56,8 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONObject source = new JSONObject();
         JSONObject query = new JSONObject();
         JSONObject bool = new JSONObject();
-        JSONObject must = new JSONObject();
+        JSONArray must = new JSONArray();
+        JSONObject itemMust = new JSONObject();
         JSONObject multiMatch = new JSONObject();
         JSONObject filter = new JSONObject();
         JSONObject geoDistance = new JSONObject();
@@ -61,9 +65,13 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
 
         JSONArray jsonArray = new JSONArray();
 
-        for(int i = 0; i <fields.length; i++){
+        JSONObject match = new JSONObject();
+        JSONObject itemMust2 = new JSONObject();
+
+        for (int i = 0; i < fields.length; i++) {
             jsonArray.put(fields[i]);
         }
+
 
         try {
             if (latitude != 0 || longitude != 0) {
@@ -79,8 +87,15 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
             multiMatch.put(Constant.TYPE, Constant.CROSS_FIELDS);
             multiMatch.put(Constant.FIELDS, jsonArray);
             multiMatch.put(Constant.OPERATOR, Constant.OR);
-            must.put(Constant.MULTI_MATCH, multiMatch);
+            itemMust.put(Constant.MULTI_MATCH, multiMatch);
 
+            if (!TextUtils.isEmpty(type)) {
+                match.put(Constant.TYPE, AccentRemover.removeAccent(type));
+                itemMust2.put(Constant.MATCH, match);
+                must.put(itemMust2);
+            }
+
+            must.put(itemMust);
             bool.put(Constant.MUST, must);
 
             query.put(Constant.BOOL, bool);
@@ -96,17 +111,24 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         * {
               "query": {
                 "bool": {
-                  "must": {
-                    "multi_match": {
-                      "query": "bun cha dong da",
-                      "type": "cross_fields",
-                      "fields": [
-                        "name",
-                        "address"
-                      ],
-                      "operator": "or"
+                  "must": [
+                    {
+                      "multi_match": {
+                        "query": "bun cha dong da",
+                        "type": "best_fields",
+                        "fields": [
+                          "name",
+                          "address"
+                        ],
+                        "operator": "or"
+                      }
+                    },
+                    {
+                      "match": {
+                        "type": "Sinh Vien"
+                      }
                     }
-                  },
+                  ],
                   "filter": {
                     "geo_distance": {
                       "distance": "10km",
@@ -118,6 +140,7 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
                   }
                 }
               }
+            }
         }
         * */
 

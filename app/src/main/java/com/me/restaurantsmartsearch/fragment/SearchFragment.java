@@ -215,7 +215,6 @@ public class SearchFragment extends BaseFragment {
 
     public void searchOnline(String s) {
         //debug purpose, remove later
-        String toast = "";
         //example nlp
         ContextNLP result = RestaurantNLP.query(s);
         HashMap<String, String> hashMap = result.getHashMap();
@@ -235,15 +234,17 @@ public class SearchFragment extends BaseFragment {
         isSearchOnline = true;
         hideSoftKeyboard();
         prLoading.setVisibility(View.VISIBLE);
-        String fields[] = {"name"};
-        if(!TextUtils.isEmpty(address)){
+        String fields[] = {"name", "", ""};
+        if (!TextUtils.isEmpty(address)) {
             fields[1] = "address";
             s = name.trim() + " " + address.trim();
         }
+
         Pin location = null;
         nearLocation = AccentRemover.removeAccent(nearLocation.trim());
-        if(!TextUtils.isEmpty(nearLocation)){
-            if(!nearLocation.equals("day"))location = pinController.getPinByLocation(nearLocation);
+        if (!TextUtils.isEmpty(nearLocation)) {
+            if (!nearLocation.equals(Constant.HERE) && !nearLocation.equals(Constant.DAY))
+                location = pinController.getPinByLocation(nearLocation);
             else {
                 location = new Pin();
                 location.setLongitude(Utils.currentLong);
@@ -251,12 +252,11 @@ public class SearchFragment extends BaseFragment {
             }
             s = name;
         }
-        if (location == null){
+        if (location == null) {
             location = new Pin();
         }
 
-
-        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), type, location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
                 try {
