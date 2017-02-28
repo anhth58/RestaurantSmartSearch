@@ -45,6 +45,7 @@ public class RestaurantNLP {
             nearByKeyWords = getKeyWordsSet(am.open("key_words_near_by.txt"));
             searchVerbKeyWords = getKeyWordsSet(am.open("key_words_search_verbs.txt"));
             cheapKeyWords = getKeyWordsSet(am.open("key_words_cheap.txt"));
+           // System.out.println(nearByKeyWords);
         }catch (Exception e){
             System.out.println(e.toString());
         }
