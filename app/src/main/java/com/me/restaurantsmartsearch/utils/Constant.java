@@ -65,4 +65,5 @@ public class Constant {
 
     //near by radius
     public static final String DISTANCE_RADIUS = "2km";
+
 }

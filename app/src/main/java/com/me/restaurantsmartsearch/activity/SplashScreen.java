@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.me.restaurantsmartsearch.R;
+import com.me.restaurantsmartsearch.model.Pin;
 import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.utils.Constant;
 
@@ -79,6 +80,20 @@ public class SplashScreen extends Activity {
                         realm.copyToRealmOrUpdate(restaurant);
                         realm.commitTransaction();
                     }
+
+                    JSONArray arrayLocation = new JSONArray(loadJSONLocationFromAsset());
+
+                    for (int i = 0; i < arrayLocation.length(); i++) {
+                        Pin pin = new Pin();
+                        pin.setId(i);
+                        pin.setLocation(arrayLocation.getJSONObject(i).optString(Constant.LOCATION));
+                        pin.setLatitude(arrayLocation.getJSONObject(i).optDouble(Constant.LATITUDE));
+                        pin.setLongitude(arrayLocation.getJSONObject(i).optDouble(Constant.LONGITUDE));
+                        realm.beginTransaction();
+                        realm.copyToRealmOrUpdate(pin);
+                        realm.commitTransaction();
+                    }
+
                     startActivity(new Intent(SplashScreen.this, MainActivity.class));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -93,6 +108,22 @@ public class SplashScreen extends Activity {
         String json = null;
         try {
             InputStream is = getAssets().open("data.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public String loadJSONLocationFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("data_location.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,6 +27,8 @@ import com.me.restaurantsmartsearch.adapter.RestaurantAdapter;
 import com.me.restaurantsmartsearch.adapter.SearchHistoryAdapter;
 import com.me.restaurantsmartsearch.async.SearchAsyncTask;
 import com.me.restaurantsmartsearch.async.SuggestAsyncTask;
+import com.me.restaurantsmartsearch.controller.PinController;
+import com.me.restaurantsmartsearch.model.Pin;
 import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.nlp.ContextNLP;
 import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
@@ -37,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.realm.Realm;
 
@@ -63,6 +67,8 @@ public class SearchFragment extends BaseFragment {
 
     private Bundle mBundle;
 
+    private PinController pinController;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,7 +77,7 @@ public class SearchFragment extends BaseFragment {
         initView(rootView);
         initListener();
         getSuggestOffline();
-
+        pinController = PinController.with(getActivity());
         return rootView;
     }
 
@@ -211,19 +217,38 @@ public class SearchFragment extends BaseFragment {
         String toast = "";
         //example nlp
         ContextNLP result = RestaurantNLP.query(s);
-        System.out.println(result.getHashMap());
+        HashMap<String, String> hashMap = result.getHashMap();
         /*
         * Right now just three types are available:
         * ContextNLP.TYPE_CHEAP, ContextNLP.TYPE_NEAR, ContextNLP.TYPE_LOCATION
         * */
-        Toast.makeText(getActivity(), toast, Toast.LENGTH_LONG).show();
+        String type, address, name, nearLocation;
+
+        type = hashMap.get(ContextNLP.FIELD_TYPE);
+        address = hashMap.get(ContextNLP.FIELD_ADDRESS);
+        name = hashMap.get(ContextNLP.FIELD_NAME);
+        nearLocation = hashMap.get(ContextNLP.FIELD_NEAR_LOCATION);
+
+        Log.d("Hasmap", hashMap.toString());
 
         isSearchOnline = true;
         hideSoftKeyboard();
         prLoading.setVisibility(View.VISIBLE);
-        long lon = 0, lat = 0;
         String fields[] = {"name"};
-        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), lon, lat,fields, new SearchAsyncTask.OnSearchComplete() {
+        if(!TextUtils.isEmpty(address)){
+            fields[1] = "address";
+            s = name.trim() + " " + address.trim();
+        }
+        Pin location = null;
+        if(!TextUtils.isEmpty(nearLocation)){
+            location = pinController.getPinByLocation(AccentRemover.removeAccent(nearLocation.trim()));
+            s = name;
+        }
+        if (location == null){
+            location = new Pin();
+        }
+
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
                 try {
@@ -316,5 +341,6 @@ public class SearchFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         realm.close();
+        pinController.getRealm().close();
     }
 }

@@ -35,11 +35,11 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
     HttpGet httpGet;
     String querryString;
     OnSearchComplete onSearchComplete;
-    long latitude;
-    long longitude;
+    double latitude;
+    double longitude;
     String fields[];
 
-    public SearchAsyncTask(String querry, long lon, long lat, String _fields[], OnSearchComplete _onSearchComplete) {
+    public SearchAsyncTask(String querry, double lon, double lat, String _fields[], OnSearchComplete _onSearchComplete) {
         querryString = querry;
         latitude = lat;
         longitude = lon;
@@ -86,7 +86,6 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
             query.put(Constant.BOOL, bool);
 
             source.put(Constant.QUERY, query);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,15 +133,8 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         try {
             HttpResponse httpResponse = httpclient.execute(httpGet);
             HttpEntity r_entity = httpResponse.getEntity();
-
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode == 200) {
-                // Server response
-                responseString = EntityUtils.toString(r_entity);
-                Log.d("#responseString", responseString);
-            } else {
-                responseString = "Http Status Code: " + statusCode;
-            }
+            responseString = EntityUtils.toString(r_entity);
         } catch (IOException e) {
             e.printStackTrace();
         }
