@@ -1,6 +1,7 @@
 package com.me.restaurantsmartsearch.nlp;
 
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import com.me.restaurantsmartsearch.activity.MainActivity;
 
@@ -10,6 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,18 +47,20 @@ public class RestaurantNLP {
             nearByKeyWords = getKeyWordsSet(am.open("key_words_near_by.txt"));
             searchVerbKeyWords = getKeyWordsSet(am.open("key_words_search_verbs.txt"));
             cheapKeyWords = getKeyWordsSet(am.open("key_words_cheap.txt"));
+            System.out.println(nearByKeyWords);
+            System.out.println(nearHereKeyWords);
         }catch (Exception e){
             System.out.println(e.toString());
         }
     }
 
     public static Set<String> getKeyWordsSet(InputStream file){
-        Set<String> keywords = new HashSet<>();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+        Set<String> keywords = new LinkedHashSet<>();
         String line;
         try{
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file, "UTF-8"));
             while ((line = reader.readLine()) != null) {
-                keywords.add(line);
+                keywords.add(new String(line.getBytes("UTF-8"), "UTF-8"));
             }
             reader.close();
         }catch (Exception e){
@@ -67,7 +71,9 @@ public class RestaurantNLP {
 
     static public boolean containsKeyWord(Set<String> keywords, String query){
         for (String keyword : keywords){
-            if (query.contains(keyword)) return true;
+            if (query.contains(keyword)){
+                return true;
+            }
         }
         return false;
     }
@@ -97,6 +103,7 @@ public class RestaurantNLP {
                 nearLocation = query.substring(index+keyword.length());
                 name = query.substring(0, index);
             }
+            Log.d("keyword nearby: ", keyword);
             isFollwingRulesFlag = true;
         }else if(containsKeyWord(cheapKeyWords, query)){
             name = query;
@@ -126,11 +133,17 @@ public class RestaurantNLP {
 
     public static ContextNLP query(String query){
         query = query.toLowerCase();
-        ContextNLP context = isFollowingRules(query);
+        String nquery = query;
+        try{
+            nquery = new String(query.getBytes("UTF-8"), "UTF-8");
+        }catch (Exception e){
+            Log.d("Exception: ", e.toString());
+        }
+        ContextNLP context = isFollowingRules(nquery);
         if (context == null){
-            Set<String> categoriesIn = getCategory(query);
-            HashMap<String, String> names = getNamesInQuery(query);
-            context = new ContextNLP(categoriesIn, names, query);
+            Set<String> categoriesIn = getCategory(nquery);
+            HashMap<String, String> names = getNamesInQuery(nquery);
+            context = new ContextNLP(categoriesIn, names, nquery);
         }
         return context;
     }
