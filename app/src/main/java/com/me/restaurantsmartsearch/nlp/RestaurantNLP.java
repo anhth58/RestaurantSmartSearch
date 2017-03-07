@@ -40,7 +40,7 @@ public class RestaurantNLP {
         AssetManager am = mainActivity.getAssets();
 
         try{
-            nameFinder = new NameFinderME(new TokenNameFinderModel(am.open("restaurants-ner-v2.bin")));
+            nameFinder = new NameFinderME(new TokenNameFinderModel(am.open("restaurants-ner-v3.bin")));
             categorizer = new DocumentCategorizerME(new DoccatModel(am.open("restaurants-dc-v2.bin")));
 
             nearHereKeyWords = getKeyWordsSet(am.open("key_words_near_here.txt"));
@@ -139,13 +139,14 @@ public class RestaurantNLP {
         }catch (Exception e){
             Log.d("Exception: ", e.toString());
         }
-        ContextNLP context = isFollowingRules(nquery);
+       /* ContextNLP context = isFollowingRules(nquery);
         if (context == null){
             Set<String> categoriesIn = getCategory(nquery);
             HashMap<String, String> names = getNamesInQuery(nquery);
             context = new ContextNLP(categoriesIn, names, nquery);
-        }
-        return context;
+        }*/
+        return new ContextNLP(getNamesInQuery(nquery), nquery);
+       // return context;
     }
 
     public static HashMap<String, String> getNamesInQuery(String query){
