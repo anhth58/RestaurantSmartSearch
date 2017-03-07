@@ -3,6 +3,7 @@ package com.me.restaurantsmartsearch.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,11 +62,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         tvPrice.setText(restaurant.getPrice());
         tvType.setText(restaurant.getType().split("-")[0].split(",")[0]);
         tvTime.setText(restaurant.getTime());
-        Picasso.with(this)
-                .load(restaurant.getImage())
-                .placeholder(R.color.gray)
-                .error(R.color.gray)
-                .into(imCover);
+        if(!TextUtils.isEmpty(restaurant.getImage())){
+            Picasso.with(this)
+                    .load(restaurant.getImage())
+                    .placeholder(R.color.gray)
+                    .error(R.color.gray)
+                    .into(imCover);
+        }
     }
 
     private void initListener() {
