@@ -15,6 +15,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import edu.stanford.nlp.ie.AbstractSequenceClassifier;
+import edu.stanford.nlp.ie.crf.CRFClassifier;
 import opennlp.tools.doccat.DoccatModel;
 import opennlp.tools.doccat.DocumentCategorizerME;
 import opennlp.tools.namefind.NameFinderME;
@@ -36,24 +38,42 @@ public class RestaurantNLP {
     private static Set<String> searchVerbKeyWords;
     private static Set<String> cheapKeyWords;
 
+    private static AbstractSequenceClassifier classifier;
+
     public static void init(MainActivity mainActivity){
         AssetManager am = mainActivity.getAssets();
 
         try{
-            nameFinder = new NameFinderME(new TokenNameFinderModel(am.open("restaurants-ner-v3.bin")));
-            categorizer = new DocumentCategorizerME(new DoccatModel(am.open("restaurants-dc-v2.bin")));
-
-            nearHereKeyWords = getKeyWordsSet(am.open("key_words_near_here.txt"));
+            //nameFinder = new NameFinderME(new TokenNameFinderModel(am.open("restaurants-ner-v3.bin")));
+           // categorizer = new DocumentCategorizerME(new DoccatModel(am.open("restaurants-dc-v2.bin")));
+            classifier = CRFClassifier.getClassifier(am.open("uet-search-ner"));
+           /* nearHereKeyWords = getKeyWordsSet(am.open("key_words_near_here.txt"));
             nearByKeyWords = getKeyWordsSet(am.open("key_words_near_by.txt"));
             searchVerbKeyWords = getKeyWordsSet(am.open("key_words_search_verbs.txt"));
-            cheapKeyWords = getKeyWordsSet(am.open("key_words_cheap.txt"));
-            System.out.println(nearByKeyWords);
-            System.out.println(nearHereKeyWords);
+            cheapKeyWords = getKeyWordsSet(am.open("key_words_cheap.txt"));*/
+
         }catch (Exception e){
             System.out.println(e.toString());
         }
     }
-
+    public static HashMap<String, String> getHashMapFromStanford(String result){
+        HashMap<String, String> hashMap = new HashMap<>();
+        String [] tokens = result.split(" ");
+        for (String token : tokens){
+            String[] parts = token.split("/");
+            if (parts.length >= 2) {
+                if (!parts[1].equals("O")) {
+                    if (hashMap.containsKey(parts[1])) {
+                        String old = hashMap.get(parts[1]);
+                        hashMap.put(parts[1], old + " " + parts[0]);
+                    } else {
+                        hashMap.put(parts[1], parts[0]);
+                    }
+                }
+            }
+        }
+        return hashMap;
+    }
     public static Set<String> getKeyWordsSet(InputStream file){
         Set<String> keywords = new LinkedHashSet<>();
         String line;
@@ -145,7 +165,7 @@ public class RestaurantNLP {
             HashMap<String, String> names = getNamesInQuery(nquery);
             context = new ContextNLP(categoriesIn, names, nquery);
         }*/
-        return new ContextNLP(getNamesInQuery(nquery), nquery);
+        return new ContextNLP(getHashMapFromStanford(classifier.classifyToString(nquery)), nquery);
        // return context;
     }
 

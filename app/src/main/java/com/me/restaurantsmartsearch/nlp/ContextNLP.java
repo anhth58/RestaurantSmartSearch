@@ -18,12 +18,16 @@ public class ContextNLP {
     public static String ATTR_NEAR_LOCATION     = "nearLocation";
     public static String ATTR_COST              = "cost";
     public static String ATTR_DISTANCE          = "distance";
+    public static String ATTR_TIME              = "time";
+    public static String ATTR_QUALITY           = "quality";
 
     public static String FIELD_TYPE             = "type";
     public static String FIELD_NAME             = "name";
     public static String FIELD_ADDRESS          = "address";
     public static String FIELD_NEAR_LOCATION    = "nearLocation";
     public static String FIELD_DISTANCE         = "distance";
+    public static String FIELD_TIME             = "time";
+    public static String FIELD_QUALITY          = "quality";
 
     private HashMap<String, String> attrsMap = new HashMap<>();
 
@@ -35,6 +39,8 @@ public class ContextNLP {
         attrsMap.put(FIELD_ADDRESS, "");
         attrsMap.put(FIELD_NEAR_LOCATION, "");
         attrsMap.put(FIELD_DISTANCE, "");
+        attrsMap.put(FIELD_TIME, "");
+        attrsMap.put(FIELD_QUALITY, "");
 
         if (names.containsKey(ATTR_NAME)){
             attrsMap.put(FIELD_NAME, names.get(ATTR_NAME));
@@ -53,6 +59,14 @@ public class ContextNLP {
 
         if (names.containsKey(ATTR_DISTANCE)){
             attrsMap.put(FIELD_DISTANCE, names.get(ATTR_DISTANCE)+"km");
+        }
+
+        if (names.containsKey(ATTR_QUALITY)){
+            attrsMap.put(FIELD_QUALITY, names.get(ATTR_QUALITY));
+        }
+
+        if (names.containsKey(ATTR_TIME)){
+            attrsMap.put(FIELD_TIME, names.get(ATTR_TIME));
         }
     }
 
