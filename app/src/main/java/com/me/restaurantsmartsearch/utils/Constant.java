@@ -13,6 +13,8 @@ public class Constant {
     public static final String DOCUMENT_NAME = "restaurant";
     public static final String AUTHORIZATION = "Basic ZWxhc3RpYzpjQXUzdXRZY0hPaDg0MjhTc1EzdDRINGc=";
 
+    public static final String SERVICE_NAME = "restaurantsmartsearch";
+
     //fields name
 
     public static final String NAME = "name";
