@@ -272,7 +272,7 @@ public class SearchFragment extends BaseFragment {
                     JSONArray jsonArray = jsonObject1.getJSONArray(Constant.HITS);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         int k = jsonArray.getJSONObject(i).optInt(Constant._ID);
-                        listResult.add(realm.where(Restaurant.class).equalTo(Constant.ID, k - 1).findFirst());
+                        listResult.add(realm.where(Restaurant.class).equalTo(Constant.ID, k).findFirst());
                     }
                     if (listResult.size() > 0) {
                         lvRestaurant.setVisibility(View.VISIBLE);

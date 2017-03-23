@@ -62,7 +62,10 @@ public class Restaurant extends RealmObject implements Parcelable {
     };
 
     public String getImage() {
-        return image;
+        if(image.contains("http")) return image;
+        else {
+            return "http:"+ image;
+        }
     }
 
     public void setImage(String image) {

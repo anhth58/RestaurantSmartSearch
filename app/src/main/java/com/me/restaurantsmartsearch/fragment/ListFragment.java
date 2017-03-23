@@ -165,9 +165,10 @@ public class ListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (listResult.size() == 0) {
-            Realm.init(getActivity());
-            realm = Realm.getDefaultInstance();
+        Realm.init(getActivity());
+        realm = Realm.getDefaultInstance();
+        if (listResult.size() == 0 && !realm.isEmpty()) {
+
             listResult = new ArrayList<>(realm.where(Restaurant.class).findAll().subList(0, 10));
             restaurantAdapter = new RestaurantAdapter(getActivity(), listResult);
             lvRestaurant.setAdapter(restaurantAdapter);

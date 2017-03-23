@@ -5,11 +5,11 @@ package com.me.restaurantsmartsearch.utils;
  */
 public class Constant {
     // config server
-    public static final String IP_SERVER_HTTP = "https://5d9bf36518aa7ffd7ef1ee6b060d3e45.us-east-1.aws.found.io:9243";
-    public static final String IP_SERVER_HTTPS = "https://5d9bf36518aa7ffd7ef1ee6b060d3e45.us-east-1.aws.found.io:9243";
-    public static final String API_IMPORT_DATA_HTTP = IP_SERVER_HTTP + "/mydb3/restaurant/";
-    public static final String API_IMPORT_DATA_HTTPS = IP_SERVER_HTTPS + "/mydb3/restaurant/";
-    public static final String INDEX_NAME = "mydb3";
+    public static final String IP_SERVER_HTTP = "http://52.32.165.202:9200";
+    public static final String IP_SERVER_HTTPS = "http://52.32.165.202:9200";
+    public static final String API_IMPORT_DATA_HTTP = IP_SERVER_HTTP + "/mydb/restaurant/";
+    public static final String API_IMPORT_DATA_HTTPS = IP_SERVER_HTTPS + "/mydb/restaurant/";
+    public static final String INDEX_NAME = "mydb";
     public static final String DOCUMENT_NAME = "restaurant";
     public static final String AUTHORIZATION = "Basic ZWxhc3RpYzpjQXUzdXRZY0hPaDg0MjhTc1EzdDRINGc=";
 
@@ -32,6 +32,10 @@ public class Constant {
     public static final String P_SPACE = "pSpace";
     public static final String P_SERVE = "pServe";
     public static final String P_QUALITY = "pQuality";
+    public static final String TIME_IN = "timeIn";
+    public static final String TIME_OUT = "timeOut";
+    public static final String MAX_PRICE = "maxPrice";
+    public static final String MIN_PRICE = "minPrice";
 
     //query constant
 

@@ -36,8 +36,9 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
     String time;
     double longitude;
     double latitude;
+    String price;
 
-    public ImportDataAsyncTask(int _id, String _name, String _address, String _type, String _description, String _time, double _longitude, double _latitude) {
+    public ImportDataAsyncTask(int _id, String _name, String _address, String _type, String _description, String _time, double _longitude, double _latitude, String _price) {
         id = _id + 1;
         name = _name;
         address = _address;
@@ -46,6 +47,7 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
         time = _time;
         longitude = _longitude;
         latitude = _latitude;
+        price = _price;
     }
 
     protected String doInBackground(Void... params) {
@@ -59,6 +61,27 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONArray suggest = new JSONArray();
         JSONObject pin = new JSONObject();
         JSONObject location = new JSONObject();
+        //"time":"07:00 AM - 10:00 PM "
+
+        String timeInOut[] = time.split("-");
+        float timeIn = 0, timeOut = 0;
+        int priceMin = 0, priceMax = 0;
+
+        if (timeInOut.length == 2) {
+            timeIn = Integer.parseInt(timeInOut[0].substring(0, 2)) + Integer.parseInt(timeInOut[0].substring(3, 5)) / 60;
+            if (timeInOut[0].substring(6, 8).equals("PM")) timeIn += 12;
+            timeOut = Integer.parseInt(timeInOut[1].substring(0, 2)) + Integer.parseInt(timeInOut[1].substring(3, 5)) / 60;
+            if (timeInOut[1].substring(6, 8).equals("PM")) timeOut += 12;
+        }
+
+        String priceMinMax[] = AccentRemover.removeAccent(price).split("-");
+
+        if (priceMinMax.length == 2) {
+            priceMin = Integer.parseInt(priceMinMax[0].trim().replaceAll("d",""));
+            priceMax = Integer.parseInt(priceMinMax[1].trim().replaceAll("d",""));
+        }
+
+
         try {
             location.put(Constant.LAT, latitude);
             location.put(Constant.LON, longitude);
@@ -70,6 +93,10 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
             jsonObject.put(Constant.DESCRIPTION, AccentRemover.removeAccent(description));
             jsonObject.put(Constant.TIME, AccentRemover.removeAccent(time));
             jsonObject.put(Constant.TYPE, AccentRemover.removeAccent(type));
+            jsonObject.put(Constant.TIME_IN, timeIn);
+            jsonObject.put(Constant.TIME_OUT, timeOut);
+            jsonObject.put(Constant.MAX_PRICE, priceMax);
+            jsonObject.put(Constant.MIN_PRICE, priceMin);
             jsonObject.put(Constant.LONGITUDE, longitude);
             jsonObject.put(Constant.LATITUDE, latitude);
             jsonSuggest.put(Constant.INPUT, name);
@@ -111,4 +138,5 @@ public class ImportDataAsyncTask extends AsyncTask<Void, Integer, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
     }
+
 }

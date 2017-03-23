@@ -1,12 +1,14 @@
 package com.me.restaurantsmartsearch.activity;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,8 +22,17 @@ import com.me.restaurantsmartsearch.fragment.MapFragment;
 import com.me.restaurantsmartsearch.fragment.SearchFragment;
 import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
+import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.AnimatorUtils;
+import com.me.restaurantsmartsearch.utils.Constant;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +68,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                importDataToElasticServer();
+                //importDataToElasticServer();
+                //mCreateAndSaveFile("SSS");
+                Realm.init(MainActivity.this);
+                realm = Realm.getDefaultInstance().getDefaultInstance();
+                Log.d("16900",realm.where(Restaurant.class).equalTo("id",16900).findFirst().getName());
+                Log.d("20900",realm.where(Restaurant.class).equalTo("id",20900).findFirst().getName());
+                Log.d("26030",realm.where(Restaurant.class).equalTo("id",26030).findFirst().getName());
             }
         });
         imSearch.setOnClickListener(this);
@@ -69,8 +86,102 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayList<Restaurant> list = new ArrayList(realm.where(Restaurant.class).findAll());
         for (int i = 0; i < list.size(); i++) {
             Restaurant restaurant = list.get(i);
-            ImportDataAsyncTask importDataAsyncTask = new ImportDataAsyncTask(restaurant.getId(), restaurant.getName(), restaurant.getAddress(), restaurant.getType(), restaurant.getDescription(), restaurant.getTime(), restaurant.getLongitude(), restaurant.getLatitude());
+            ImportDataAsyncTask importDataAsyncTask = new ImportDataAsyncTask(restaurant.getId() + 25506, restaurant.getName(), restaurant.getAddress(), restaurant.getType(), restaurant.getDescription(), restaurant.getTime(), restaurant.getLongitude(), restaurant.getLatitude(),restaurant.getPrice());
             importDataAsyncTask.execute();
+        }
+    }
+
+    public void mCreateAndSaveFile(String params) {
+        try {
+            Realm.init(MainActivity.this);
+            Realm realm = Realm.getDefaultInstance().getDefaultInstance();
+            File file1 = new File(new File(Environment.getExternalStorageDirectory().toString()),"restaurants_foody.json");
+            FileWriter file = new FileWriter(file1);
+            ArrayList<Restaurant> list = new ArrayList<>(realm.where(Restaurant.class).findAll());
+            Log.d("Size",list.size()+"");
+            for(int i = 0; i< list.size();i++){
+                //{"index":{"_index":"test","_type":"test","_id":"1"}}
+                JSONObject index = new JSONObject();
+                index.put("_index","mydb");
+                index.put("_type","restaurant");
+                index.put("_id",Integer.toString(i + 25506));
+                JSONObject action = new JSONObject();
+                action.put("index",index);
+                Restaurant restaurant = list.get(i);
+                JSONObject jsonObject = new JSONObject();
+                JSONObject jsonSuggest = new JSONObject();
+                JSONObject jsonSuggest1 = new JSONObject();
+                JSONArray suggest = new JSONArray();
+                JSONObject pin = new JSONObject();
+                JSONObject location = new JSONObject();
+                location.put(Constant.LAT, restaurant.getLatitude());
+                location.put(Constant.LON, restaurant.getLongitude());
+                pin.put(Constant.LOCATION, location);
+
+                //jsonObject.put(Constant.PIN, pin);
+                jsonObject.put(Constant.NAME, AccentRemover.removeAccent(restaurant.getName()));
+                jsonObject.put(Constant.ADDRESS, AccentRemover.removeAccent(restaurant.getAddress()));
+                jsonObject.put(Constant.DESCRIPTION, AccentRemover.removeAccent(restaurant.getDescription()));
+                jsonObject.put(Constant.TYPE, AccentRemover.removeAccent(restaurant.getType()));
+                jsonObject.put(Constant.TIME, AccentRemover.removeAccent(restaurant.getTime()));
+                jsonObject.put(Constant.IMAGE, AccentRemover.removeAccent(restaurant.getImage()));
+
+                String timeInOut[] = restaurant.getTime().split("-");
+                float timeIn = 0, timeOut = 0;
+                int priceMin = 0, priceMax = 0;
+
+                if (timeInOut.length == 2) {
+                    if(timeInOut[0].trim().length() == 8)timeIn = Integer.parseInt(timeInOut[0].trim().substring(0, 2)) + Integer.parseInt(timeInOut[0].trim().substring(3, 5)) / 60;
+                    else {
+                        timeIn = Integer.parseInt(timeInOut[0].trim().substring(0, 1)) + Integer.parseInt(timeInOut[0].trim().substring(2, 4)) / 60;
+                    }
+                    if (timeInOut[0].substring(6, 8).equals("PM")) timeIn += 12;
+                    if(timeInOut[1].trim().length() == 8)timeOut = Integer.parseInt(timeInOut[1].trim().substring(0, 2)) + Integer.parseInt(timeInOut[1].trim().substring(3, 5)) / 60;
+                    else {
+                        timeOut = Integer.parseInt(timeInOut[1].trim().substring(0, 1)) + Integer.parseInt(timeInOut[1].trim().substring(2, 4)) / 60;
+                    }
+                    if (timeInOut[1].substring(6, 8).equals("PM")) timeOut += 12;
+                }
+
+                String priceMinMax[] = AccentRemover.removeAccent(restaurant.getPrice()).split("-");
+
+                if (priceMinMax.length == 2) {
+                    priceMin = Integer.parseInt(priceMinMax[0].replaceAll("d","").replace(".","").trim());
+                    priceMax = Integer.parseInt(priceMinMax[1].replaceAll("d","").replace(".","").trim());
+                }
+
+//                jsonObject.put(Constant.TIME_IN, timeIn);
+//                jsonObject.put(Constant.TIME_OUT, timeOut);
+//                jsonObject.put(Constant.MAX_PRICE, priceMin);
+//                jsonObject.put(Constant.MIN_PRICE, priceMax);
+                JSONObject point = new JSONObject();
+                point.put("pLocation",restaurant.getpLocation());
+                point.put("pSpace",restaurant.getpSpace());
+                point.put("pCost",restaurant.getpCost());
+                point.put("pServe",restaurant.getpServe());
+                point.put("pQuality",restaurant.getpQuality());
+                jsonObject.put("point",point);
+                jsonObject.put(Constant.PRICE,restaurant.getPrice());
+                jsonObject.put(Constant.LONGITUDE, restaurant.getLongitude());
+                jsonObject.put(Constant.LATITUDE, restaurant.getLatitude());
+                jsonSuggest.put(Constant.INPUT, restaurant.getName());
+                jsonSuggest.put(Constant.WEIGHT, i + 1000);
+                jsonSuggest1.put(Constant.INPUT, AccentRemover.removeAccent(restaurant.getName()));
+                jsonSuggest1.put(Constant.WEIGHT, i + 10);
+                suggest.put(jsonSuggest);
+                suggest.put(jsonSuggest1);
+                //jsonObject.put(Constant.SUGGEST, suggest);
+                //file.write(action.toString()+"\n");
+                file.write(jsonObject.toString()+",");
+                file.flush();
+                Log.d("Writing",i +"");
+            }
+            file.close();
+            Log.d("Write", "done");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e){
+            e.printStackTrace();
         }
     }
 
