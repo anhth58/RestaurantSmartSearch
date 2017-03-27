@@ -83,6 +83,6 @@ public class Constant {
 
     //Constant value
 
-    public static final int SIZE_PER_SEARCH = 10;
+    public static final int SIZE_PER_SEARCH = 15;
 
 }
