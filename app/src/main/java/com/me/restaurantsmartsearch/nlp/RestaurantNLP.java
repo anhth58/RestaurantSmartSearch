@@ -46,7 +46,7 @@ public class RestaurantNLP {
         try{
             //nameFinder = new NameFinderME(new TokenNameFinderModel(am.open("restaurants-ner-v3.bin")));
            // categorizer = new DocumentCategorizerME(new DoccatModel(am.open("restaurants-dc-v2.bin")));
-            classifier = CRFClassifier.getClassifier(am.open("uet-search-ner"));
+            classifier = CRFClassifier.getClassifier(am.open("uet-search-ner-new-v1"));
            /* nearHereKeyWords = getKeyWordsSet(am.open("key_words_near_here.txt"));
             nearByKeyWords = getKeyWordsSet(am.open("key_words_near_by.txt"));
             searchVerbKeyWords = getKeyWordsSet(am.open("key_words_search_verbs.txt"));

@@ -55,6 +55,12 @@ public class ContextNLP {
             if (cost.equals("sinh viên") || cost.equals("rẻ")){
                 attrsMap.put(FIELD_TYPE, "Sinh viên");
             }
+            String name = names.get(ATTR_NAME).toLowerCase();
+            if ( (cost.equals("văn phòng") ||
+                    cost.equals("sinh viên")) && name.equals("cơm"))
+            {
+                attrsMap.put(FIELD_NAME, name + " " + cost);
+            }
         }
 
         if (names.containsKey(ATTR_DISTANCE)){
@@ -68,6 +74,7 @@ public class ContextNLP {
         if (names.containsKey(ATTR_TIME)){
             attrsMap.put(FIELD_TIME, names.get(ATTR_TIME));
         }
+
     }
 
     public ContextNLP(String type, String name, String address, String nearLocation){
