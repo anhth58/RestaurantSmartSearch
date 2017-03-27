@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ public class ListFragment extends BaseFragment {
     ArrayList<String> suggestList = new ArrayList<>();
     SuggestAdapter suggestAdapter;
     boolean isSearchOnline = false;
-    Realm realm;
+    Realm realmUI, realmSearch;
 
     @Nullable
     @Override
@@ -62,7 +63,8 @@ public class ListFragment extends BaseFragment {
         initView(view);
         initListener();
         initSwipeMenu();
-
+        initData();
+        Log.d("AA","#onCreateView");
         return view;
     }
 
@@ -103,9 +105,22 @@ public class ListFragment extends BaseFragment {
         lvRestaurant.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
-                intent.putExtra("restaurant", listResult.get(position));
-                getActivity().startActivity(intent);
+                if(listResult.get(position).isValid()){
+                    Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+                    intent.putExtra("restaurant", listResult.get(position));
+                    getActivity().startActivity(intent);
+                }
+                else {
+                    Realm.init(getActivity());
+                    realmUI = Realm.getDefaultInstance();
+                    listResult = new ArrayList<>(realmUI.where(Restaurant.class).findAll().subList(0, 10));
+                    restaurantAdapter = new RestaurantAdapter(getActivity(), listResult);
+                    lvRestaurant.setAdapter(restaurantAdapter);
+                    restaurantAdapter.setRestaurant(listResult);
+                    Intent intent = new Intent(getActivity(), RestaurantDetailActivity.class);
+                    intent.putExtra("restaurant", listResult.get(position));
+                    getActivity().startActivity(intent);
+                }
             }
         });
 
@@ -152,6 +167,22 @@ public class ListFragment extends BaseFragment {
         });
     }
 
+    public void initData(){
+        Realm.init(getActivity());
+        realmUI = Realm.getDefaultInstance();
+        Log.d("Size",listResult.size() +"");
+        if (!realmUI.isEmpty() && listResult.size() == 0) {
+            listResult = new ArrayList<>(realmUI.where(Restaurant.class).findAll().subList(0, 10));
+            restaurantAdapter = new RestaurantAdapter(getActivity(), listResult);
+            lvRestaurant.setAdapter(restaurantAdapter);
+            restaurantAdapter.setRestaurant(listResult);
+        } else if(listResult.size() >0 && listResult.get(0).isValid()){
+//            restaurantAdapter = new RestaurantAdapter(getActivity(), listResult);
+            lvRestaurant.setAdapter(restaurantAdapter);
+            restaurantAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,20 +190,22 @@ public class ListFragment extends BaseFragment {
 
     @Override
     public String getTagName() {
-        return null;
+        return ListFragment.class.getSimpleName();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Realm.init(getActivity());
-        realm = Realm.getDefaultInstance();
-        if (listResult.size() == 0 && !realm.isEmpty()) {
-
-            listResult = new ArrayList<>(realm.where(Restaurant.class).findAll().subList(0, 10));
+        Log.d("AA","#onResume");
+        if(listResult.size() >0 && !listResult.get(0).isValid()){
+            Log.d("AA","invalid");
+            listResult = new ArrayList<>(realmUI.where(Restaurant.class).findAll().subList(0, 10));
             restaurantAdapter = new RestaurantAdapter(getActivity(), listResult);
             lvRestaurant.setAdapter(restaurantAdapter);
             restaurantAdapter.setRestaurant(listResult);
+        }
+        else {
+            Log.d("AA","valid");
         }
     }
 
@@ -182,7 +215,7 @@ public class ListFragment extends BaseFragment {
         double lon = 0, lat = 0;
         String type = "";
         String fields[] = {"name"};
-        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(edSearch.getText().toString()), type, lon, lat, fields, new SearchAsyncTask.OnSearchComplete() {
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(edSearch.getText().toString()), 0 , type, lon, lat, fields, new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
                 try {
@@ -190,13 +223,13 @@ public class ListFragment extends BaseFragment {
                     lvSugest.setVisibility(View.GONE);
                     listResult.clear();
                     Realm.init(getActivity());
-                    realm = Realm.getDefaultInstance();
+                    realmSearch = Realm.getDefaultInstance();
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject(Constant.HITS);
                     JSONArray jsonArray = jsonObject1.getJSONArray(Constant.HITS);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         int k = jsonArray.getJSONObject(i).optInt(Constant._ID);
-                        listResult.add(realm.where(Restaurant.class).equalTo(Constant.ID, k - 1).findFirst());
+                        listResult.add(realmSearch.where(Restaurant.class).equalTo(Constant.ID, k - 1).findFirst());
                     }
                     if (listResult.size() > 0) {
                         restaurantAdapter.setRestaurant(listResult);
@@ -242,8 +275,15 @@ public class ListFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        realm.close();
+    public void onPause() {
+        super.onPause();
+        Log.d("AA","#onPause");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+//        if(realmUI != null)realmUI.close();
+//        if(realmSearch != null)realmSearch.close();
     }
 }

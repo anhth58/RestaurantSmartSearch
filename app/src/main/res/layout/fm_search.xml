@@ -8,14 +8,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0dp"
             android:layout_below="@+id/llInputSearch"
-            android:background="@color/gray" />
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -35,29 +38,37 @@
             android:divider="@null"
             android:dividerHeight="0dp"
             android:visibility="visible" />
-
-        <ListView
-            android:id="@+id/lv_restaurant"
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/line"
-            android:layout_marginLeft="@dimen/p10dp"
-            android:layout_marginRight="@dimen/p10dp"
-            android:visibility="gone" />
+            android:id="@+id/v_refresh"
+            android:visibility="gone"
+            android:layout_above="@+id/v_footer">
+            <ListView
+                android:id="@+id/lv_restaurant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/p10dp"
+                android:layout_marginRight="@dimen/p10dp"
+                android:visibility="gone" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
         <LinearLayout
             android:id="@+id/llInputSearch"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/p55dp"
             android:layout_alignParentTop="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="#F5F5F5">
 
             <ImageView
                 android:id="@+id/ivBack"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/p55dp"
+                android:layout_height="@dimen/p55dp"
                 android:layout_gravity="center_vertical"
-                android:padding="16dp"
+                android:padding="@dimen/p18dp"
                 android:src="@drawable/back_gray" />
 
             <EditText
@@ -74,19 +85,19 @@
 
             <ImageView
                 android:id="@+id/im_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/p55dp"
+                android:layout_height="@dimen/p55dp"
                 android:layout_gravity="center_vertical"
-                android:padding="16dp"
+                android:padding="@dimen/p18dp"
                 android:src="@drawable/cancel"
                 android:tint="@color/gray" />
 
             <ImageView
                 android:id="@+id/im_record"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/p55dp"
+                android:layout_height="@dimen/p55dp"
                 android:layout_gravity="center_vertical"
-                android:padding="16dp"
+                android:padding="@dimen/p18dp"
                 android:src="@drawable/microphone" />
         </LinearLayout>
 
@@ -104,6 +115,33 @@
             android:layout_centerInParent="true"
             android:visibility="gone"
             android:id="@+id/pr_loading"/>
+        <FrameLayout
+            android:id="@+id/v_footer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:minHeight="40dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="40dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="@string/loading"
+                android:textColor="@color/txt_pull"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </FrameLayout>
     </RelativeLayout>
 
 </RelativeLayout>

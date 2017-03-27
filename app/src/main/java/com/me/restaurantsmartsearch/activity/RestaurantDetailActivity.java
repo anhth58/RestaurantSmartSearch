@@ -64,7 +64,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         tvTime.setText(restaurant.getTime());
         if(!TextUtils.isEmpty(restaurant.getImage())){
             Picasso.with(this)
-                    .load(restaurant.getImage())
+                    .load(restaurant.getImage().replace("80x80","1000x750"))
                     .placeholder(R.color.gray)
                     .error(R.color.gray)
                     .into(imCover);

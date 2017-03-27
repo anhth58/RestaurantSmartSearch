@@ -1,9 +1,11 @@
 package com.me.restaurantsmartsearch.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -55,12 +58,14 @@ public class SearchFragment extends BaseFragment {
     private ListView mListSearch;
     private EditText mInputSearch;
     private ProgressBar prLoading;
-    private View imClear, imRecord, tvTitle, tvNoResult;
+    private SwipeRefreshLayout vRefresh;
+    private View imClear, imRecord, tvTitle, tvNoResult, footerView;
     private GridView mGvResult;
     private ArrayList<String> mListHistorySearch = new ArrayList<>();
     private SearchHistoryAdapter searchHistoryAdapter;
-    private Realm realm;
+    private Realm realmSearch, realmSuggest;
     private boolean isSearching = false;
+    private int page = 0;
 
     ArrayList<Restaurant> listResult = new ArrayList<>();
     RestaurantAdapter restaurantAdapter;
@@ -92,9 +97,34 @@ public class SearchFragment extends BaseFragment {
         imRecord = view.findViewById(R.id.im_record);
         lvRestaurant = (ListView) view.findViewById(R.id.lv_restaurant);
         prLoading = (ProgressBar) view.findViewById(R.id.pr_loading);
+        vRefresh = (SwipeRefreshLayout) view.findViewById(R.id.v_refresh);
+        footerView = view.findViewById(R.id.v_footer);
     }
 
     public void initListener() {
+        vRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page = 0;
+                searchOnline(mInputSearch.getText().toString(), page);
+                Log.d("Refreshing", "SS");
+            }
+        });
+
+        lvRestaurant.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                hideSoftKeyboard();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (!isSearching && firstVisibleItem > 0 && firstVisibleItem + visibleItemCount >= totalItemCount) {
+                    searchOnline(mInputSearch.getText().toString(), ++page);
+                }
+            }
+        });
+
         searchHistoryAdapter = new SearchHistoryAdapter(getActivity(), mListHistorySearch, new SearchHistoryAdapter.IOnCellListView() {
             @Override
             public void onRightClick(String sSearch) {
@@ -104,11 +134,13 @@ public class SearchFragment extends BaseFragment {
 
             @Override
             public void onMidClick(String sSearch, int position) {
+                page = 0;
                 listResult.clear();
                 mListSearch.setVisibility(View.GONE);
+                vRefresh.setVisibility(View.GONE);
                 mInputSearch.setText(sSearch.trim());
                 mInputSearch.setSelection(sSearch.length());
-                searchOnline(sSearch.trim());
+                searchOnline(sSearch.trim(), page);
             }
 
             @Override
@@ -118,7 +150,8 @@ public class SearchFragment extends BaseFragment {
                 mListSearch.setVisibility(View.GONE);
                 mInputSearch.setText(sSearch.trim());
                 mInputSearch.setSelection(sSearch.length());
-                searchOnline(sSearch.trim());
+                page = 0;
+                searchOnline(sSearch.trim(), page);
             }
         });
         mListSearch.setAdapter(searchHistoryAdapter);
@@ -127,6 +160,7 @@ public class SearchFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 lvRestaurant.setVisibility(View.GONE);
+                vRefresh.setVisibility(View.GONE);
                 mListSearch.setVisibility(View.VISIBLE);
                 mInputSearch.setCursorVisible(true);
                 showSoftKeyboard(mInputSearch);
@@ -145,7 +179,8 @@ public class SearchFragment extends BaseFragment {
         mInputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                searchOnline(mInputSearch.getText().toString());
+                page = 0;
+                searchOnline(mInputSearch.getText().toString(), page);
                 return false;
             }
         });
@@ -213,7 +248,7 @@ public class SearchFragment extends BaseFragment {
         hideSoftKeyboard();
     }
 
-    public void searchOnline(String s) {
+    public void searchOnline(String s, final int pageResult) {
         //debug purpose, remove later
         //example nlp
         ContextNLP result = RestaurantNLP.query(s);
@@ -232,8 +267,8 @@ public class SearchFragment extends BaseFragment {
         Log.d("Hasmap", hashMap.toString());
 
         isSearchOnline = true;
+        isSearching = true;
         hideSoftKeyboard();
-        prLoading.setVisibility(View.VISIBLE);
         String fields[] = {"name", "", ""};
         if (!TextUtils.isEmpty(address)) {
             fields[1] = "address";
@@ -255,27 +290,38 @@ public class SearchFragment extends BaseFragment {
         if (location == null) {
             location = new Pin();
         }
-
-        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), type, location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
+        if (page > 0) {
+            footerView.setVisibility(View.VISIBLE);
+            prLoading.setVisibility(View.GONE);
+        } else {
+            footerView.setVisibility(View.GONE);
+            prLoading.setVisibility(View.VISIBLE);
+        }
+        if (vRefresh.isRefreshing()) prLoading.setVisibility(View.GONE);
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), pageResult, type, location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
                 try {
+                    footerView.setVisibility(View.GONE);
+                    if (vRefresh.isRefreshing()) vRefresh.setRefreshing(false);
                     Log.d("#ResponseString", response);
                     prLoading.setVisibility(View.GONE);
                     isSearchOnline = false;
+                    isSearching = false;
                     mListSearch.setVisibility(View.GONE);
-                    listResult.clear();
+                    if (pageResult == 0) listResult.clear();
                     Realm.init(getActivity());
-                    realm = Realm.getDefaultInstance();
+                    realmSearch = Realm.getDefaultInstance();
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject(Constant.HITS);
                     JSONArray jsonArray = jsonObject1.getJSONArray(Constant.HITS);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         int k = jsonArray.getJSONObject(i).optInt(Constant._ID);
-                        listResult.add(realm.where(Restaurant.class).equalTo(Constant.ID, k).findFirst());
+                        listResult.add(realmSearch.where(Restaurant.class).equalTo(Constant.ID, k).findFirst());
                     }
                     if (listResult.size() > 0) {
                         lvRestaurant.setVisibility(View.VISIBLE);
+                        vRefresh.setVisibility(View.VISIBLE);
                         if (restaurantAdapter == null) {
                             restaurantAdapter = new RestaurantAdapter(getActivity(), listResult);
                             lvRestaurant.setAdapter(restaurantAdapter);
@@ -294,11 +340,12 @@ public class SearchFragment extends BaseFragment {
     public void getSuggestOffline() {
         mInputSearch.setCursorVisible(true);
         lvRestaurant.setVisibility(View.GONE);
+        vRefresh.setVisibility(View.GONE);
         mListSearch.setVisibility(View.VISIBLE);
         showSoftKeyboard(mInputSearch);
         Realm.init(getActivity());
-        realm = Realm.getDefaultInstance();
-        ArrayList<Restaurant> temp = new ArrayList<>(realm.where(Restaurant.class).findAll().subList(0, 10));
+        realmSuggest = Realm.getDefaultInstance();
+        ArrayList<Restaurant> temp = new ArrayList<>(realmSuggest.where(Restaurant.class).findAll().subList(0, 10));
         mListHistorySearch.clear();
         for (int i = 0; i < temp.size(); i++) {
             mListHistorySearch.add(temp.get(i).getName());
@@ -342,13 +389,15 @@ public class SearchFragment extends BaseFragment {
         mInputSearch.setCursorVisible(true);
         mListSearch.setVisibility(View.VISIBLE);
         lvRestaurant.setVisibility(View.GONE);
+        vRefresh.setVisibility(View.GONE);
         showSoftKeyboard(mInputSearch);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        realm.close();
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(realmSearch != null)realmSearch.close();
+        if(realmSuggest != null)realmSuggest.close();
         pinController.getRealm().close();
     }
 }

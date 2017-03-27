@@ -40,14 +40,16 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
     double longitude;
     String fields[];
     String type;
+    int page;
 
-    public SearchAsyncTask(String querry, String _type, double lon, double lat, String _fields[], OnSearchComplete _onSearchComplete) {
+    public SearchAsyncTask(String querry, int _page, String _type, double lon, double lat, String _fields[], OnSearchComplete _onSearchComplete) {
         querryString = querry;
         latitude = lat;
         longitude = lon;
         onSearchComplete = _onSearchComplete;
         fields = _fields;
         type = _type;
+        page = _page;
     }
 
     protected String doInBackground(Void... params) {
@@ -71,6 +73,8 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         for (int i = 0; i < fields.length; i++) {
             jsonArray.put(fields[i]);
         }
+        int size = Constant.SIZE_PER_SEARCH;
+        int from = 0 + page*size;
 
 
         try {
@@ -97,10 +101,10 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
 
             must.put(itemMust);
             bool.put(Constant.MUST, must);
-
             query.put(Constant.BOOL, bool);
-
             source.put(Constant.QUERY, query);
+            source.put(Constant.FROM, from);
+            source.put(Constant.SIZE, size);
         } catch (JSONException e) {
             e.printStackTrace();
         }

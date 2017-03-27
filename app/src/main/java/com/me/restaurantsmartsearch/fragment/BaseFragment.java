@@ -67,6 +67,12 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(getTagName(), "#onDestroy");
+    }
+
     protected MainActivity getMainActivity() {
 //        Logger.d(getTagName(), "#getMainActivity");
         try {

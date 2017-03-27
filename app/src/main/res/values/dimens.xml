@@ -124,6 +124,8 @@
     <dimen name="p3dp">2dp</dimen>
     <dimen name="p15dp">15dp</dimen>
     <dimen name="p18dp">18dp</dimen>
+    <dimen name="p16.5dp">16.5dp</dimen>
+    <dimen name="p17dp">17dp</dimen>
     <dimen name="p20dp">20dp</dimen>
     <dimen name="p22dp">22dp</dimen>
     <dimen name="p24dp">24dp</dimen>

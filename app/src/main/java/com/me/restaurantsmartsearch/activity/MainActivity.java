@@ -1,11 +1,14 @@
 package com.me.restaurantsmartsearch.activity;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +23,7 @@ import com.me.restaurantsmartsearch.fragment.BaseFragment;
 import com.me.restaurantsmartsearch.fragment.ListFragment;
 import com.me.restaurantsmartsearch.fragment.MapFragment;
 import com.me.restaurantsmartsearch.fragment.SearchFragment;
+import com.me.restaurantsmartsearch.fragment.UserFragment;
 import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
@@ -44,7 +48,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView imSearch, imSetting;
     private FloatingActionButton fab;
     private Realm realm;
-
+    private int[] tabIcons = {
+            R.drawable.ic_home_white,
+            R.drawable.ic_map,
+            R.drawable.ic_user
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RestaurantNLP.init(this);
         initView();
         initListener();
+        setupTabIcons();
     }
 
     public void initView() {
@@ -62,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imSearch = (ImageView) findViewById(R.id.im_search);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(3);
     }
 
     public void initListener() {
@@ -78,6 +88,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         imSearch.setOnClickListener(this);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                int tabIconColor = ContextCompat.getColor(MainActivity.this, R.color.white);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                super.onTabUnselected(tab);
+                int tabIconColor = ContextCompat.getColor(MainActivity.this, R.color.black);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+            }
+        });
     }
 
     public void importDataToElasticServer() {
@@ -189,7 +220,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ListFragment(), "LIST");
         adapter.addFrag(new MapFragment(), "MAP");
+        adapter.addFrag(new UserFragment(), "USER");
         viewPager.setAdapter(adapter);
+    }
+
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     public void addSearchResultToMap(List<Restaurant> list) {

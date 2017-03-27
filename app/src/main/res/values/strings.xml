@@ -10,5 +10,6 @@
 
     <string name="p_closed">CHƯA MỞ CỬA</string>
     <string name="p_opening">ĐANG MỞ CỬA</string>
+    <string name="loading">Đang tải</string>
 
 </resources>

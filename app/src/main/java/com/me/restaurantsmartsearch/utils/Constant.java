@@ -70,6 +70,8 @@ public class Constant {
     public static final String BOOL = "bool";
     public static final String FILTER = "filter";
     public static final String MATCH = "match";
+    public static final String FROM = "from";
+    public static final String SIZE = "size";
 
     //near by radius
     public static final String DISTANCE_RADIUS = "2km";
@@ -78,5 +80,9 @@ public class Constant {
 
     public static final String DAY = "day";
     public static final String HERE = "here";
+
+    //Constant value
+
+    public static final int SIZE_PER_SEARCH = 10;
 
 }

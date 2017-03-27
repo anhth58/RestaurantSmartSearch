@@ -59,6 +59,7 @@ public class RestaurantAdapter extends BaseAdapter {
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
+        if(!restaurant.isValid()) return convertView;
         holder.tvTime.setText(restaurant.getTime());
         holder.tvName.setText(restaurant.getName());
         holder.tvType.setText(restaurant.getType().split("-")[0].split(",")[0]);
