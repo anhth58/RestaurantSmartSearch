@@ -74,7 +74,14 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
             jsonArray.put(fields[i]);
         }
         int size = Constant.SIZE_PER_SEARCH;
-        int from = 5 + page*size;
+        int from = 0;
+        if(page == 0){
+            size = 20;
+            from = 0;
+        }
+        else{
+            from = 5 + page*size;
+        }
 
 
         try {
