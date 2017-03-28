@@ -74,7 +74,7 @@ public class Constant {
     public static final String SIZE = "size";
 
     //near by radius
-    public static final String DISTANCE_RADIUS = "2km";
+    public static final String DISTANCE_RADIUS = "1km";
 
     //constant
 
