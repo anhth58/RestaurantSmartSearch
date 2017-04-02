@@ -28,6 +28,7 @@ public class ContextNLP {
     public static String FIELD_DISTANCE         = "distance";
     public static String FIELD_TIME             = "time";
     public static String FIELD_QUALITY          = "quality";
+    public static String FIELD_COST             = "cost";
 
     private HashMap<String, String> attrsMap = new HashMap<>();
 
@@ -41,6 +42,7 @@ public class ContextNLP {
         attrsMap.put(FIELD_DISTANCE, "");
         attrsMap.put(FIELD_TIME, "");
         attrsMap.put(FIELD_QUALITY, "");
+        attrsMap.put(FIELD_COST, "");
 
         if (names.containsKey(ATTR_NAME)){
             attrsMap.put(FIELD_NAME, names.get(ATTR_NAME));
@@ -52,6 +54,7 @@ public class ContextNLP {
 
         if (names.containsKey(ATTR_COST)){
             String cost = names.get(ATTR_COST).toLowerCase();
+            attrsMap.put(FIELD_COST, cost);
             if (cost.equals("sinh viên") || cost.equals("rẻ")){
                 attrsMap.put(FIELD_TYPE, "Sinh viên");
             }
