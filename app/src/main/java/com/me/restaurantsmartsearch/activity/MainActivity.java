@@ -2,6 +2,7 @@ package com.me.restaurantsmartsearch.activity;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +30,7 @@ import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.AnimatorUtils;
 import com.me.restaurantsmartsearch.utils.Constant;
+import com.me.restaurantsmartsearch.utils.RealmBackupRestore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("16900",realm.where(Restaurant.class).equalTo("id",16900).findFirst().getName());
                 Log.d("20900",realm.where(Restaurant.class).equalTo("id",20900).findFirst().getName());
                 Log.d("26030",realm.where(Restaurant.class).equalTo("id",26030).findFirst().getName());
+                Log.d("Size",realm.where(Restaurant.class).count()+"");
             }
         });
         imSearch.setOnClickListener(this);
@@ -107,6 +110,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 super.onTabReselected(tab);
+            }
+
+        });
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                switch (position){
+                    case 0:
+                        fab.setVisibility(View.VISIBLE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_email, getApplicationContext().getTheme()));
+                        } else {
+                            fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_dialog_email));
+                        }
+                        break;
+                    case 1:
+                        fab.setVisibility(View.VISIBLE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            fab.setImageDrawable(getResources().getDrawable(R.drawable.direct, getApplicationContext().getTheme()));
+                        } else {
+                            fab.setImageDrawable(getResources().getDrawable(R.drawable.direct));
+                        }
+                        break;
+                    case 2:
+                        fab.setVisibility(View.GONE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                fab.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
     }

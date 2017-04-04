@@ -15,6 +15,7 @@ import com.me.restaurantsmartsearch.model.Restaurant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Laptop88T on 11/16/2016.
@@ -56,6 +57,7 @@ public class RestaurantAdapter extends BaseAdapter {
             holder.tvType = (TextView) convertView.findViewById(R.id.tv_type);
             holder.tvTime = (TextView) convertView.findViewById(R.id.tv_time);
             holder.imAvatar = (ImageView) convertView.findViewById(R.id.im_avatar);
+            holder.imStatus = (ImageView) convertView.findViewById(R.id.im_status);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
@@ -64,6 +66,44 @@ public class RestaurantAdapter extends BaseAdapter {
         holder.tvName.setText(restaurant.getName());
         holder.tvType.setText(restaurant.getType().split("-")[0].split(",")[0]);
         holder.tvAddress.setText(restaurant.getAddress());
+
+        String timeInOut[] = restaurant.getTime().trim().split("-");
+        float timeIn = 0, timeOut = 0;
+
+        if (timeInOut.length == 2) {
+            if(timeInOut[0].trim().length() == 8){
+                timeIn = Integer.parseInt(timeInOut[0].trim().substring(0, 2)) +(float) Float.parseFloat(timeInOut[0].trim().substring(3, 5)) / 60;
+                if (timeInOut[0].substring(6, 8).equals("PM")) timeIn += 12;
+            }
+            else {
+                timeIn = Integer.parseInt(timeInOut[0].trim().substring(0, 1)) + (float)Float.parseFloat(timeInOut[0].trim().substring(2, 4)) / 60;
+                if (timeInOut[0].substring(5, 7).equals("PM")) timeIn += 12;
+            }
+
+            if(timeInOut[1].trim().length() == 8){
+                timeOut = Integer.parseInt(timeInOut[1].trim().substring(0, 2)) + (float)Integer.parseInt(timeInOut[1].trim().substring(3, 5)) / 60;
+                if (timeInOut[1].substring(7, 9).equals("PM")) timeOut += 12;
+            }
+            else {
+                timeOut = Integer.parseInt(timeInOut[1].trim().substring(0, 1)) + (float)Float.parseFloat(timeInOut[1].trim().substring(2, 4)) / 60;
+                if (timeInOut[1].substring(6, 8).equals("PM")) timeOut += 12;
+            }
+
+        }
+
+        Calendar rightNow = Calendar.getInstance();
+        int hour1 = rightNow.get(Calendar.HOUR_OF_DAY);
+
+        int minute = rightNow.get(Calendar.MINUTE);
+        float hour = hour1 + (float)minute/60;
+
+        if(hour > timeIn && hour < timeOut){
+            holder.imStatus.setImageResource(R.drawable.ic_opening);
+        }
+        else {
+            holder.imStatus.setImageResource(R.drawable.ic_closed);
+        }
+
         if(!TextUtils.isEmpty(restaurant.getImage())){
             Picasso.with(mContext)
                     .load(restaurant.getImage())
@@ -84,6 +124,6 @@ public class RestaurantAdapter extends BaseAdapter {
 
     private class ViewHolder {
         TextView tvName, tvAddress, tvType, tvTime;
-        ImageView imAvatar;
+        ImageView imAvatar, imStatus;
     }
 }

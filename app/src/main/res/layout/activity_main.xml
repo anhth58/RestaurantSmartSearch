@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/p55dp"
+            android:layout_height="@dimen/p50dp"
             android:background="@color/colorPrimary">
             <TextView
                 android:layout_width="wrap_content"
@@ -32,21 +32,21 @@
                 android:src="@drawable/search"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/im_setting"
-                android:padding="@dimen/p18dp"/>
+                android:padding="@dimen/p15dp"/>
             <ImageView
                 android:id="@+id/im_setting"
                 android:layout_width="@dimen/p55dp"
                 android:layout_height="@dimen/p55dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:padding="@dimen/p18dp"
+                android:padding="@dimen/p15dp"
                 android:src="@drawable/setting" />
         </RelativeLayout>
         <android.support.design.widget.TabLayout
             android:layout_below="@+id/toolbar"
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/p55dp"
+            android:layout_height="@dimen/p50dp"
             app:tabIndicatorColor="@android:color/white"
             app:tabMode="fixed"
             app:tabGravity="fill"

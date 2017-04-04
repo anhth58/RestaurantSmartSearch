@@ -150,7 +150,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     builder.include(marker.getPosition());
                 }
                 LatLngBounds bounds = builder.build();
-                int padding = 60; // offset from edges of the map in pixels
+                int padding = 100; // offset from edges of the map in pixels
                 CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
                 mGoogleMap.animateCamera(cu);
             }

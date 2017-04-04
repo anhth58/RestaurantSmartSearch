@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.me.restaurantsmartsearch.R;
 
@@ -43,5 +44,9 @@ public class Utils {
             point.y = display.getHeight();
         }
         return point;
+    }
+
+    public static void reportMessage(Context context, String message){
+        Toast.makeText(context, message,Toast.LENGTH_SHORT).show();
     }
 }

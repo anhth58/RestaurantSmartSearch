@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:layout_marginBottom="@dimen/p20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/v_sort_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_dialog_size"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/sort_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_button" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/dilivery_download"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dilivery_normal"
+        android:background="@color/gray_dark"
+        android:visibility="gone" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dilivery_normal"
+        android:background="@color/gray_dark" />
+
+    <LinearLayout
+        android:id="@+id/v_sort_distance"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_dialog_size"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_distance"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_button" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dilivery_normal"
+        android:background="@color/gray_dark" />
+
+    <LinearLayout
+        android:id="@+id/v_sort_price_ex"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_dialog_size"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_price_ex"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_button" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dilivery_normal"
+        android:background="@color/gray_dark" />
+    <LinearLayout
+        android:id="@+id/v_sort_price_cheap"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_dialog_size"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_price"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/v_detail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_dialog_size"
+        android:background="@drawable/button_white_app_color_selector"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/v_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_dialog_size"
+        android:layout_marginTop="@dimen/p15dp"
+        android:background="@drawable/button_white_app_color_selector"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_button" />
+    </LinearLayout>
+
+</LinearLayout>

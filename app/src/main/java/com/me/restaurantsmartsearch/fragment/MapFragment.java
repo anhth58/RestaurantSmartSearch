@@ -31,6 +31,8 @@ import com.me.restaurantsmartsearch.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+
 /**
  * Created by Laptop88T on 11/15/2016.
  */
@@ -97,6 +99,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 Log.d("currentLocation",Utils.currentLat+" "+Utils.currentLong);
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
                 myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
+            }
+            if(mGoogleMap != null){
+                Realm.init(getActivity());
+                Realm realm = Realm.getDefaultInstance();
+                ArrayList<Restaurant> listResult = new ArrayList<>(realm.where(Restaurant.class).greaterThan("id",25505).lessThan("id",25520).findAll());
+                addSearchResult(listResult);
             }
         }
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.Constant;
+import com.me.restaurantsmartsearch.utils.Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,9 +41,9 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
     double longitude;
     String fields[];
     String type;
-    int page;
+    int page, sortMode;
 
-    public SearchAsyncTask(String querry, int _page, String _type, double lon, double lat, String _fields[], OnSearchComplete _onSearchComplete) {
+    public SearchAsyncTask(String querry,int _sortMode, int _page, String _type, double lon, double lat, String _fields[], OnSearchComplete _onSearchComplete) {
         querryString = querry;
         latitude = lat;
         longitude = lon;
@@ -50,6 +51,7 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         fields = _fields;
         type = _type;
         page = _page;
+        sortMode = _sortMode;
     }
 
     protected String doInBackground(Void... params) {
@@ -64,6 +66,9 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
         JSONObject filter = new JSONObject();
         JSONObject geoDistance = new JSONObject();
         JSONObject pinLocation = new JSONObject();
+        JSONObject sort = new JSONObject();
+        JSONArray arrSort = new JSONArray();
+        JSONObject sortGeoDistance = new JSONObject();
 
         JSONArray jsonArray = new JSONArray();
 
@@ -112,6 +117,40 @@ public class SearchAsyncTask extends AsyncTask<Void, Integer, String> {
             source.put(Constant.QUERY, query);
             source.put(Constant.FROM, from);
             source.put(Constant.SIZE, size);
+
+            switch (sortMode){
+                case 1:
+                    if (latitude == 0 && longitude == 0){
+                        latitude = Utils.currentLat;
+                        longitude = Utils.currentLong;
+                    }
+                    JSONObject point  = new JSONObject();
+                    point.put(Constant.LAT, latitude);
+                    point.put(Constant.LON, longitude);
+                    sortGeoDistance.put(Constant.PIN_LOCATION, point);
+                    sortGeoDistance.put("order","asc");
+                    sortGeoDistance.put("unit","km");
+
+                    sort.put("_geo_distance",sortGeoDistance);
+                    arrSort.put(sort);
+                    arrSort.put("_score");
+                    source.put("sort",arrSort);
+                    break;
+                case 2:
+                    sort.put("minPrice","asc");
+                    arrSort.put(sort);
+                    arrSort.put("_score");
+                    source.put("sort",arrSort);
+
+                    break;
+                case 3:
+                    sort.put("maxPrice","desc");
+                    arrSort.put(sort);
+                    arrSort.put("_score");
+                    source.put("sort",arrSort);
+                    break;
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

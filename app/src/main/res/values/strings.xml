@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Let\'s Search</string>
+    <string name="app_name">Easy Food</string>
     <string name="action_settings">Settings</string>
     <string name="api_key">AIzaSyD-VOHaMFP3jgQ-8Px0z7jqs_1bVvbpEWE</string>
     <string name="p_serve">Phục vụ</string>
@@ -11,5 +11,19 @@
     <string name="p_closed">CHƯA MỞ CỬA</string>
     <string name="p_opening">ĐANG MỞ CỬA</string>
     <string name="loading">Đang tải</string>
+    <string name="sort_name">Sắp xếp theo tên</string>
+    <string name="sort_distance">Sắp xếp theo khoảng cách</string>
+    <string name="sort_price">Sắp xếp theo giá tăng dần</string>
+    <string name="sort_price_ex">Sắp xếp theo giá giảm dần</string>
+    <string name="cancel">Hủy</string>
+    <string name="username_empty">Tên đăng nhập không được trống!</string>
+    <string name="password_empty">Mật khẩu không được trống!</string>
+    <string name="username_invalid">Tên đăng nhập không đúng</string>
+    <string name="password_invalid">Mật khẩu không đúng</string>
+    <string name="password_validate">Mật khẩu không được ít hơn 6 kí tự</string>
 
+    <string name="action_add_favourite">Add to Favourites</string>
+    <string name="see_in_googlemap">See in google map</string>
+    <string name="backdrop_title">LOVE MUSIC</string>
+    <string name="backdrop_subtitle">This season top 20 albums</string>
 </resources>

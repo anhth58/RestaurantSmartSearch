@@ -98,7 +98,17 @@
                 android:layout_height="@dimen/p55dp"
                 android:layout_gravity="center_vertical"
                 android:padding="@dimen/p18dp"
-                android:src="@drawable/microphone" />
+                android:src="@drawable/microphone"
+                android:tint="@color/gray"/>
+            <ImageView
+                android:id="@+id/im_settings"
+                android:layout_width="@dimen/p55dp"
+                android:layout_height="@dimen/p55dp"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/p18dp"
+                android:src="@drawable/ic_sort"
+                android:tint="@color/gray"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <TextView

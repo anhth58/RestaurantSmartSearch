@@ -127,4 +127,6 @@
 
     <color name="survey">#37a4dd</color>
     <color name="ki">#46c1a5</color>
+
+    <color name="album_title">#4c4c4c</color>
 </resources>

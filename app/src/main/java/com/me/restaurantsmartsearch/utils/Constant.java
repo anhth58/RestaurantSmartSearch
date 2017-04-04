@@ -85,4 +85,15 @@ public class Constant {
 
     public static final int SIZE_PER_SEARCH = 15;
 
+    //sort mode
+
+    public static final int SORT_BY_NAME = 0;
+    public static final int SORT_BY_DISTANCE = 1;
+    public static final int SORT_BY_PRICE_CHEAP = 2;
+    public static final int SORT_BY_PRICE_EX = 3;
+
+    public static final String USER_NAME = "anhth58";
+    public static final String PASS_WORD = "uetsearch";
+
+
 }

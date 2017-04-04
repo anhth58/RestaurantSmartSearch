@@ -2,6 +2,7 @@ package com.me.restaurantsmartsearch.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -38,6 +41,7 @@ import com.me.restaurantsmartsearch.nlp.RestaurantNLP;
 import com.me.restaurantsmartsearch.utils.AccentRemover;
 import com.me.restaurantsmartsearch.utils.Constant;
 import com.me.restaurantsmartsearch.utils.Utils;
+import com.me.restaurantsmartsearch.view.dialog.SortDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,9 +55,9 @@ import io.realm.Realm;
 /**
  * Created by Laptop88T on 2/9/2017.
  */
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = SearchFragment.class.getSimpleName();
-    private ImageView mImageBack;
+    private ImageView mImageBack, imMicro, imSort;
     private ListView lvRestaurant;
     private ListView mListSearch;
     private EditText mInputSearch;
@@ -66,6 +70,7 @@ public class SearchFragment extends BaseFragment {
     private Realm realmSearch, realmSuggest;
     private boolean isSearching = false;
     private int page = 0;
+    private int sortMode = 0;
 
     ArrayList<Restaurant> listResult = new ArrayList<>();
     RestaurantAdapter restaurantAdapter;
@@ -89,6 +94,8 @@ public class SearchFragment extends BaseFragment {
 
     public void initView(View view) {
         mImageBack = (ImageView) view.findViewById(R.id.ivBack);
+        imMicro = (ImageView) view.findViewById(R.id.im_record);
+        imSort = (ImageView) view.findViewById(R.id.im_settings);
         mListSearch = (ListView) view.findViewById(R.id.lvSuggest);
         mInputSearch = (EditText) view.findViewById(R.id.etSearch);
         tvTitle = view.findViewById(R.id.tv_title);
@@ -99,6 +106,8 @@ public class SearchFragment extends BaseFragment {
         prLoading = (ProgressBar) view.findViewById(R.id.pr_loading);
         vRefresh = (SwipeRefreshLayout) view.findViewById(R.id.v_refresh);
         footerView = view.findViewById(R.id.v_footer);
+        imSort.setOnClickListener(this);
+        imMicro.setOnClickListener(this);
     }
 
     public void initListener() {
@@ -298,10 +307,12 @@ public class SearchFragment extends BaseFragment {
             prLoading.setVisibility(View.VISIBLE);
         }
         if (vRefresh.isRefreshing()) prLoading.setVisibility(View.GONE);
-        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s), pageResult, type, location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask(AccentRemover.removeAccent(s),sortMode, pageResult, type, location.getLongitude(), location.getLatitude(), fields, new SearchAsyncTask.OnSearchComplete() {
             @Override
             public void onSearchComplete(String response) {
                 try {
+                    imSort.setVisibility(View.VISIBLE);
+                    imMicro.setVisibility(View.GONE);
                     footerView.setVisibility(View.GONE);
                     if (vRefresh.isRefreshing()) vRefresh.setRefreshing(false);
                     Log.d("#ResponseString", response);
@@ -389,6 +400,8 @@ public class SearchFragment extends BaseFragment {
         mInputSearch.setCursorVisible(true);
         mListSearch.setVisibility(View.VISIBLE);
         lvRestaurant.setVisibility(View.GONE);
+        imMicro.setVisibility(View.VISIBLE);
+        imSort.setVisibility(View.GONE);
         vRefresh.setVisibility(View.GONE);
         showSoftKeyboard(mInputSearch);
     }
@@ -399,5 +412,50 @@ public class SearchFragment extends BaseFragment {
         if(realmSearch != null)realmSearch.close();
         if(realmSuggest != null)realmSuggest.close();
         pinController.getRealm().close();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.im_settings:
+                SortDialog sortDialog = new SortDialog(getActivity(), new SortDialog.onClickChooseAction() {
+                    @Override
+                    public void onSortName() {
+                        sortMode = 0;
+                        page = 0;
+                        searchOnline(mInputSearch.getText().toString(), page);
+                    }
+
+                    @Override
+                    public void onSortDistance() {
+                        sortMode = 1;
+                        page = 0;
+                        searchOnline(mInputSearch.getText().toString(), page);
+                    }
+
+                    @Override
+                    public void onSortPrice() {
+                        page = 0;
+                        sortMode = 2;
+                        searchOnline(mInputSearch.getText().toString(), page);
+                    }
+
+                    @Override
+                    public void onSortPriceEx() {
+                        page = 0;
+                        sortMode = 3;
+                        searchOnline(mInputSearch.getText().toString(), page);
+                    }
+                });
+                sortDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                sortDialog.getWindow().setGravity(Gravity.BOTTOM);
+                sortDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                sortDialog.show();
+                break;
+            case R.id.im_record:
+                break;
+            default:
+                break;
+        }
     }
 }

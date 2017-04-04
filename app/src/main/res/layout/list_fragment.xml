@@ -3,50 +3,28 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_app">
-    <RelativeLayout
-        android:id="@+id/linear_search"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_horizontal_40"
-        android:layout_margin="10dp"
-        android:background="@drawable/search_shape"
-        android:descendantFocusability="beforeDescendants"
-        android:focusableInTouchMode="true"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/p10dp"
+        android:gravity="center_vertical"
+        android:id="@+id/v_hot"
         android:visibility="gone">
-
-        <com.me.restaurantsmartsearch.view.CusEditText
-            android:maxLength="32"
-            android:id="@+id/ed_search"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_horizontal_40"
-            android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_search_dark"
-            android:gravity="start|center_vertical"
-            android:hint="Search"
-            android:imeOptions="actionSearch"
-            android:paddingLeft="@dimen/p10dp"
-            android:paddingRight="@dimen/p10dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/size_text_16sp" />
-    </RelativeLayout>
-    <com.baoyz.swipemenulistview.SwipeMenuListView
-        android:layout_below="@+id/linear_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_hot"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ĐANG HOT"
+            android:layout_marginLeft="@dimen/p10dp"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_restaurant"
-        android:layout_marginLeft="@dimen/p10dp"
-        android:layout_marginRight="@dimen/p10dp"/>
-    <ListView
-        android:id="@+id/lv_suggest"
-        android:visibility="gone"
+        android:layout_below="@+id/v_hot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_search"
-        android:paddingLeft="@dimen/p10dp"
-        android:paddingRight="@dimen/p10dp"
-        android:background="@drawable/background_shadow">
-
-    </ListView>
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
 </RelativeLayout>
