@@ -20,6 +20,7 @@ public class ContextNLP {
     public static String ATTR_DISTANCE          = "distance";
     public static String ATTR_TIME              = "time";
     public static String ATTR_QUALITY           = "quality";
+    public static String ATTR_TYPE              = "type";
 
     public static String FIELD_TYPE             = "type";
     public static String FIELD_NAME             = "name";
@@ -78,6 +79,15 @@ public class ContextNLP {
             attrsMap.put(FIELD_TIME, names.get(ATTR_TIME));
         }
 
+        if (names.containsKey(ATTR_TYPE)){
+            String type = names.get(ATTR_TYPE);
+            String oldType = attrsMap.get(FIELD_TYPE);
+            if (oldType.equals("")){
+                attrsMap.put(FIELD_TIME, type);
+            }else {
+                attrsMap.put(FIELD_TIME, oldType + "," + type);
+            }
+        }
     }
 
     public ContextNLP(String type, String name, String address, String nearLocation){
