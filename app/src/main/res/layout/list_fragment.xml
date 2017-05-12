@@ -1,30 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_app">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/p10dp"
-        android:gravity="center_vertical"
-        android:id="@+id/v_hot"
-        android:visibility="gone">
-        <ImageView
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_hot"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:padding="@dimen/p5dp"
+            android:gravity="center_vertical"
+            android:id="@+id/v_hot"
+            android:visibility="visible">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_hot"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang hot"
+                android:layout_marginLeft="@dimen/p10dp"/>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lv_restaurant"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ĐANG HOT"
-            android:layout_marginLeft="@dimen/p10dp"/>
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/p5dp"
+            android:gravity="center_vertical"
+            android:id="@+id/v_recommended"
+            android:visibility="visible">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_hot"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Có thể bạn quan tâm"
+                android:layout_marginLeft="@dimen/p10dp"/>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lvRecommended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/lv_restaurant"
-        android:layout_below="@+id/v_hot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:scrollbars="vertical" />
-</RelativeLayout>
+</ScrollView>
