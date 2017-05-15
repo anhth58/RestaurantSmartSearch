@@ -120,9 +120,9 @@ public class ListFragment extends BaseFragment {
         realmUI = Realm.getDefaultInstance();
         Log.d("Size",listResult.size() +"");
         if (!realmUI.isEmpty() && listResult.size() == 0) {
-            listResult = new ArrayList<>(realmUI.where(Restaurant.class).greaterThan("id",25505).lessThan("id",25510).findAll());
+            listResult = new ArrayList<>(realmUI.where(Restaurant.class).greaterThan("id",25505).lessThan("id",25516).findAll());
             restaurantAdapter = new RestaurantRecommendAdapter(getActivity(), listResult);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -224,9 +224,9 @@ public class ListFragment extends BaseFragment {
             Log.d("AA","invalid");
             Realm.init(getActivity());
             realmUI = Realm.getDefaultInstance();
-            listResult = new ArrayList<>(realmUI.where(Restaurant.class).greaterThan("id",25505).lessThan("id",25510).findAll());
+            listResult = new ArrayList<>(realmUI.where(Restaurant.class).greaterThan("id",25505).lessThan("id",25516).findAll());
             restaurantAdapter = new RestaurantRecommendAdapter(getActivity(), listResult);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(),1);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
             recyclerView.setItemAnimator(new DefaultItemAnimator());

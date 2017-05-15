@@ -3,6 +3,7 @@ package com.me.restaurantsmartsearch.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,12 +22,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.me.restaurantsmartsearch.R;
+import com.me.restaurantsmartsearch.async.SearchMapAsyncTask;
 import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +50,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     GoogleApiClient mGoogleApiClient;
     Location currentLocation;
     List<Marker> markers = new ArrayList<>();
+    List<Marker> markersResult = new ArrayList<>();
     Marker myMarker;
+    LatLngBounds curScreen;
 
     @Nullable
     @Override
@@ -98,7 +108,44 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 Utils.currentLong = currentLocation.getLongitude();
                 Log.d("currentLocation",Utils.currentLat+" "+Utils.currentLong);
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
-                myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
+               if(myMarker != null) myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
+                mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    @Override
+                    public void onCameraChange(CameraPosition cameraPosition) {
+                        curScreen = mGoogleMap.getProjection()
+                                .getVisibleRegion().latLngBounds;
+                        SearchMapAsyncTask searchMapAsyncTask = new SearchMapAsyncTask(curScreen.southwest, curScreen.northeast, new SearchMapAsyncTask.OnSearchComplete() {
+                            @Override
+                            public void onSearchComplete(String s) {
+                                try {
+                                    for (int i = 0; i< markersResult.size(); i++){
+                                        markersResult.get(i).remove();
+                                    }
+                                    markersResult.clear();
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    JSONObject result = jsonObject.getJSONObject("result");
+                                    JSONArray poi = result.getJSONArray("poi");
+                                    for(int i = 0; i< poi.length(); i++){
+                                        JSONObject res = poi.getJSONObject(i);
+                                        JSONObject gps = res.getJSONObject("gps");
+                                        if(res.optString("title") != null && res.optString("title").length() > 0){
+                                            //big marker here
+                                            markersResult.add(mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(gps.optDouble("latitude"), gps.optDouble("longitude"))).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_food_map)).title(res.optString("title"))));
+                                        }
+                                        else {
+                                            // small marker here
+                                            markersResult.add(mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(gps.optDouble("latitude"), gps.optDouble("longitude"))).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_point))));
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        searchMapAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    }
+                });
             }
             if(mGoogleMap != null){
                 Realm.init(getActivity());
