@@ -2,6 +2,7 @@ package com.me.restaurantsmartsearch.fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,7 +29,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.me.restaurantsmartsearch.R;
+import com.me.restaurantsmartsearch.async.FetchUrl;
+import com.me.restaurantsmartsearch.async.ParserTask;
 import com.me.restaurantsmartsearch.async.SearchMapAsyncTask;
 import com.me.restaurantsmartsearch.model.Restaurant;
 import com.me.restaurantsmartsearch.utils.Utils;
@@ -37,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -44,15 +51,19 @@ import io.realm.Realm;
 /**
  * Created by Laptop88T on 11/15/2016.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
 
     GoogleMap mGoogleMap;
     GoogleApiClient mGoogleApiClient;
     Location currentLocation;
     List<Marker> markers = new ArrayList<>();
     List<Marker> markersResult = new ArrayList<>();
-    Marker myMarker;
+    List<Marker> directMakers = new ArrayList<>();
+    Marker myMarker, tempMarker, selectedMarker;
+    LatLng selectedPlace;
     LatLngBounds curScreen;
+    View vDirect;
+    Polyline line;
 
     @Nullable
     @Override
@@ -61,6 +72,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
         FragmentManager fm = getChildFragmentManager();
         SupportMapFragment supportMapFragment = ((SupportMapFragment) fm.findFragmentById(R.id.map));
+        vDirect = view.findViewById(R.id.im_direct);
         supportMapFragment.getMapAsync(this);
         return view;
     }
@@ -106,9 +118,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             if (mGoogleMap != null && currentLocation != null) {
                 Utils.currentLat = currentLocation.getLatitude();
                 Utils.currentLong = currentLocation.getLongitude();
+                mGoogleMap.setOnMarkerClickListener(this);
                 Log.d("currentLocation",Utils.currentLat+" "+Utils.currentLong);
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 15));
-               if(myMarker != null) myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
+               if(myMarker == null) myMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude())).visible(false));
                 mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
                     @Override
                     public void onCameraChange(CameraPosition cameraPosition) {
@@ -130,11 +143,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                                         JSONObject gps = res.getJSONObject("gps");
                                         if(res.optString("title") != null && res.optString("title").length() > 0){
                                             //big marker here
-                                            markersResult.add(mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(gps.optDouble("latitude"), gps.optDouble("longitude"))).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_food_map)).title(res.optString("title"))));
+                                            tempMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(gps.optDouble("latitude"), gps.optDouble("longitude"))).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_food_map)).title(res.optString("title")));
+                                            markersResult.add(tempMarker);
                                         }
                                         else {
                                             // small marker here
-                                            markersResult.add(mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(gps.optDouble("latitude"), gps.optDouble("longitude"))).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_point))));
+                                            tempMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(gps.optDouble("latitude"), gps.optDouble("longitude"))).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_point)));
+                                            markersResult.add(tempMarker);
+                                        }
+                                        if(tempMarker != null && selectedPlace != null && tempMarker.getPosition().latitude == selectedPlace.latitude && tempMarker.getPosition().longitude == selectedPlace.longitude){
+                                            selectedMarker = tempMarker;
+                                            selectedMarker.showInfoWindow();
                                         }
                                     }
                                 } catch (JSONException e) {
@@ -177,6 +196,117 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         if (markers != null && markers.size() > pos) {
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markers.get(pos).getPosition(), 15));
             markers.get(pos).showInfoWindow();
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        selectedPlace = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
+        selectedMarker = marker;
+        Log.d("selected",selectedPlace.latitude+" "+selectedPlace.longitude);
+        return false;
+    }
+
+    private String getUrl(LatLng origin, LatLng dest) {
+
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + sensor;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+
+
+        return url;
+    }
+
+    public void drawDirection(){
+        if(selectedPlace != null){
+            LatLng origin = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+            LatLng dest = new LatLng(selectedPlace.latitude,selectedPlace.longitude);
+
+            // Getting URL to the Google Directions API
+            String url = getUrl(origin, dest);
+            Log.d("onMapClick", url.toString());
+            FetchUrl FetchUrl = new FetchUrl(new FetchUrl.OnFetchUrlComplete() {
+                @Override
+                public void onFetchUrlComplete(String s) {
+                    ParserTask parserTask = new ParserTask(new ParserTask.OnParserTaskCompleted() {
+                        @Override
+                        public void onParserTaskCompleted(List<List<HashMap<String, String>>> result) {
+                            ArrayList<LatLng> points;
+                            PolylineOptions lineOptions = null;
+                            if(line != null){
+                                line.remove();
+                            }
+                            // Traversing through all the routes
+                            for (int i = 0; i < result.size(); i++) {
+                                points = new ArrayList<>();
+                                lineOptions = new PolylineOptions();
+
+                                // Fetching i-th route
+                                List<HashMap<String, String>> path = result.get(i);
+
+                                // Fetching all the points in i-th route
+                                for (int j = 0; j < path.size(); j++) {
+                                    HashMap<String, String> point = path.get(j);
+
+                                    double lat = Double.parseDouble(point.get("lat"));
+                                    double lng = Double.parseDouble(point.get("lng"));
+                                    LatLng position = new LatLng(lat, lng);
+
+                                    points.add(position);
+                                }
+
+                                // Adding all the points in the route to LineOptions
+                                lineOptions.addAll(points);
+                                lineOptions.width(10);
+                                lineOptions.color(Color.RED);
+
+                                Log.d("onPostExecute","onPostExecute lineoptions decoded");
+
+                            }
+
+                            // Drawing polyline in the Google Map for the i-th route
+                            if(lineOptions != null) {
+                                line = mGoogleMap.addPolyline(lineOptions);
+                            }
+                            else {
+                                Log.d("onPostExecute","without Polylines drawn");
+                            }
+                        }
+                    });
+
+                    // Invokes the thread for parsing the JSON data
+                    parserTask.execute(s);
+                }
+            });
+
+            // Start downloading json data from Google Directions API
+            FetchUrl.execute(url);
+            //move map camera
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            directMakers.add(myMarker);
+            directMakers.add(selectedMarker);
+            for (Marker marker : directMakers) {
+                builder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
+            int padding = 100; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            mGoogleMap.animateCamera(cu);
         }
     }
 }

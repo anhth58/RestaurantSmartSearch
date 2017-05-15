@@ -86,10 +86,10 @@ public class ListFragment extends BaseFragment {
                     searchOnline("Coffee gần đây",0);
                 }
                 else if(hour1 >= 11 && hour1 <13){
-                    searchOnline("Cơm giá rẻ gần đây",0);
+                    searchOnline("Cơm phở bún giá rẻ gần đây",0);
                 }
                 else if(hour1 >= 13 && hour1 <= 17){
-                    searchOnline("Trà sữa gần đây",0);
+                    searchOnline("Trà sữa giải khát gần đây",0);
                 }
                 else if(hour1 == 17){
                     searchOnline("Bia hơi gần đây",0);

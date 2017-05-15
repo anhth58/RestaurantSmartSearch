@@ -75,7 +75,7 @@ public class RestaurantRecommendAdapter extends RecyclerView.Adapter<RestaurantR
         // loading album cover using Glide library
         if(!TextUtils.isEmpty(restaurant.getImage())){
             Picasso.with(mContext)
-                    .load(restaurant.getImage())
+                    .load(restaurant.getImage().replace("80x80","1000x750"))
                     .placeholder(R.drawable.im_placeholder)
                     .error(R.drawable.im_placeholder)
                     .into(holder.thumbnail);

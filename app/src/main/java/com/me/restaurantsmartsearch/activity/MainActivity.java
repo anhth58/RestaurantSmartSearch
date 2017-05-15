@@ -82,12 +82,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 //importDataToElasticServer();
                 //mCreateAndSaveFile("SSS");
-                Realm.init(MainActivity.this);
-                realm = Realm.getDefaultInstance().getDefaultInstance();
-                Log.d("16900",realm.where(Restaurant.class).equalTo("id",16900).findFirst().getName());
-                Log.d("20900",realm.where(Restaurant.class).equalTo("id",20900).findFirst().getName());
-                Log.d("26030",realm.where(Restaurant.class).equalTo("id",26030).findFirst().getName());
-                Log.d("Size",realm.where(Restaurant.class).count()+"");
+                if(viewPager.getCurrentItem() == 1){
+                    List<Fragment> fragments = getSupportFragmentManager().getFragments();
+                    for (Fragment fragment : fragments) {
+                        if (fragment instanceof MapFragment) {
+                            ((MapFragment) fragment).drawDirection();
+                            return;
+                        }
+
+                    }
+                }
             }
         });
         imSearch.setOnClickListener(this);
